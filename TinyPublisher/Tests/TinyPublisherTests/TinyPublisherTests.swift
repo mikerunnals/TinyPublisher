@@ -2,11 +2,23 @@ import XCTest
 @testable import TinyPublisher
 
 final class TinyPublisherTests: XCTestCase {
+    
+    var cancellables: [AnyCancellable] = []
+    
     func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(TinyPublisher().text, "Hello, World!")
+        
+        let publisher = TinyPublisher<Bool>()
+        
+        let e = expectation(description: "true")
+        
+        publisher.sink { value in
+            XCTAssertTrue(value)
+            e.fulfill()
+        }.store(in: &cancellables)
+        
+        publisher.notify(true)
+        
+        waitForExpectations(timeout: 1)
     }
 
     static var allTests = [
