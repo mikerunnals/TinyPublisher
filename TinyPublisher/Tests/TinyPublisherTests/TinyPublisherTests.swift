@@ -22,11 +22,12 @@ final class TinyPublisherTests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
     
-    class TestClass {
-        @TinyPublished var testProperty: Bool = false
-    }
     
     func testPublishedPropertyWrapper() {
+        
+        class TestClass {
+            @TinyPublished var testProperty = false
+        }
         
         let testClass = TestClass()
         testClass.testProperty = false
