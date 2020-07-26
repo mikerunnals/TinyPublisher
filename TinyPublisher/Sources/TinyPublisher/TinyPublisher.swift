@@ -30,8 +30,6 @@ public protocol Publisher {
 
 public class TinyPublisher<U> : Publisher {
     
-    public typealias Output = U
-
     private var observers: [UUID: (U) -> Void] = [:]
 
     public init() {}
@@ -46,7 +44,7 @@ public class TinyPublisher<U> : Publisher {
         observers.removeValue(forKey: uuid)
     }
 
-    public func notify(_ update: U) {
+    public func send(_ update: U) {
         observers.forEach { $0.1(update) }
     }
 }

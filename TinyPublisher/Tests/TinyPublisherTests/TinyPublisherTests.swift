@@ -16,7 +16,7 @@ final class TinyPublisherTests: XCTestCase {
             e.fulfill()
         }.store(in: &cancellables)
         
-        publisher.notify(true)
+        publisher.send(true)
         
         waitForExpectations(timeout: 1)
     }
