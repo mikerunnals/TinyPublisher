@@ -27,7 +27,7 @@ final class TinyPublisherTests: XCTestCase {
 
     func testTinyPublisherBool() {
         
-        let publisher = TinyPublisher<Bool>()
+        let publisher = TinyPublisher<Bool, Never>()
         
         let e = expectation(description: "true")
         

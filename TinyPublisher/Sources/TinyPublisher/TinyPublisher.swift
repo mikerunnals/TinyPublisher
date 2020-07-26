@@ -4,16 +4,16 @@ public protocol AnyCancellable: class {
     func store(in array: inout [AnyCancellable])
 }
 
-fileprivate final class TinyPublisherCancellable<U>: AnyCancellable {
+fileprivate final class TinyPublisherCancellable<U, Never>: AnyCancellable {
     
     func store(in array: inout [AnyCancellable]) {
         array.append(self)
     }
     
     let uuid: UUID
-    weak var publisher: TinyPublisher<U>?
+    weak var publisher: TinyPublisher<U, Never>?
     
-    init(uuid: UUID, publisher: TinyPublisher<U>) {
+    init(uuid: UUID, publisher: TinyPublisher<U, Never>) {
         self.uuid = uuid
         self.publisher = publisher
     }
@@ -26,7 +26,7 @@ fileprivate final class TinyPublisherCancellable<U>: AnyCancellable {
 @propertyWrapper
 public class TinyPublished<Value> {
     private var value: Value
-    private let publisher = TinyPublisher<Value>()
+    private let publisher = TinyPublisher<Value, Never>()
     
     public init(wrappedValue: Value) {
         self.value = wrappedValue
@@ -46,19 +46,19 @@ public class TinyPublished<Value> {
         }
     }
     
-    public var projectedValue: TinyPublisher<Value> {
+    public var projectedValue: TinyPublisher<Value, Never> {
         publisher
     }
 }
 
-public class TinyPublisher<U> {
+public class TinyPublisher<U, Never> {
     
     private var observers: [UUID: (U) -> Void] = [:]
 
     public init() {}
     
     public func sink(receiveValue: @escaping ((U) -> Void)) -> AnyCancellable {
-        let cancellable = TinyPublisherCancellable<U>(uuid: UUID(), publisher: self)
+        let cancellable = TinyPublisherCancellable<U, Never>(uuid: UUID(), publisher: self)
         observers[cancellable.uuid] = receiveValue
         return cancellable
     }
