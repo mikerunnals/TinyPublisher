@@ -23,12 +23,35 @@ fileprivate final class TinyPublisherCancellable<U>: AnyCancellable {
     }
 }
 
-public protocol Publisher {
-    associatedtype Output
-    func sink(receiveValue: @escaping ((Self.Output) -> Void)) -> AnyCancellable
+@propertyWrapper
+public class TinyPublished<Value> {
+    private var value: Value
+    private let publisher = TinyPublisher<Value>()
+    
+    public init(wrappedValue: Value) {
+        self.value = wrappedValue
+    }
+    
+    public init(initialValue: Value) {
+        self.value = initialValue
+    }
+        
+    public var wrappedValue: Value {
+        get {
+            value
+        }
+        set {
+            value = newValue
+            publisher.send(wrappedValue)
+        }
+    }
+    
+    public var projectedValue: TinyPublisher<Value> {
+        publisher
+    }
 }
 
-public class TinyPublisher<U> : Publisher {
+public class TinyPublisher<U> {
     
     private var observers: [UUID: (U) -> Void] = [:]
 

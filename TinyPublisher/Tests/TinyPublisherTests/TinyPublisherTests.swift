@@ -1,11 +1,12 @@
 import XCTest
+import Foundation
 @testable import TinyPublisher
 
 final class TinyPublisherTests: XCTestCase {
     
     var cancellables: [AnyCancellable] = []
     
-    func testExample() {
+    func testTinyPublisherBool() {
         
         let publisher = TinyPublisher<Bool>()
         
@@ -20,8 +21,30 @@ final class TinyPublisherTests: XCTestCase {
         
         waitForExpectations(timeout: 1)
     }
+    
+    class TestClass {
+        @TinyPublished var testProperty: Bool = false
+    }
+    
+    func testPublishedPropertyWrapper() {
+        
+        let testClass = TestClass()
+        testClass.testProperty = false
+
+        let e = expectation(description: "true")
+
+        testClass.$testProperty.sink { value in
+            XCTAssertTrue(value)
+            e.fulfill()
+        }.store(in: &cancellables)
+
+        testClass.testProperty = true
+
+        waitForExpectations(timeout: 1)
+    }
+
 
     static var allTests = [
-        ("testExample", testExample),
+        ("testTinyPublisherBool", testTinyPublisherBool),
     ]
 }
