@@ -62,8 +62,8 @@ public class TinyPublisher<U, Never> {
     
     public func sink(receiveValue: @escaping ((U) -> Void)) -> AnyCancellable {
         let uuid = UUID()
-        let cancellable = AnyCancellable {
-            self.removeObserver(uuid)
+        let cancellable = AnyCancellable { [weak self] in
+            self?.removeObserver(uuid)
         }
         observers[uuid] = receiveValue
         return cancellable
