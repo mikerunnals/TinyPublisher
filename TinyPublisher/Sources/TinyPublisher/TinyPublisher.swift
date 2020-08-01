@@ -1,30 +1,33 @@
 import Foundation
 
-public protocol AnyCancellable: class {
-    func store(in array: inout [AnyCancellable])
+public protocol Cancellable {
+    func cancel()
 }
 
-fileprivate final class TinyPublisherCancellable<U, Never>: AnyCancellable {
+public final class AnyCancellable : Cancellable {
     
     func store(in array: inout [AnyCancellable]) {
         array.append(self)
     }
     
-    let uuid: UUID
-    weak var publisher: TinyPublisher<U, Never>?
+    public func cancel() {
+        cancelClosure?()
+        cancelClosure = nil
+    }
     
-    init(uuid: UUID, publisher: TinyPublisher<U, Never>) {
-        self.uuid = uuid
-        self.publisher = publisher
+    private var cancelClosure: (() -> Void)?
+        
+    init(cancelClosure: (() -> Void)?) {
+        self.cancelClosure = cancelClosure
     }
     
     deinit {
-        publisher?.removeObserver(uuid: uuid)
+        cancel()
     }
 }
 
 @propertyWrapper
-public class TinyPublished<Value> {
+public class TinyPublished<Value> { // TODO: How to name this Published<Value> and not collide with Foundation?
     private var value: Value
     private let publisher = TinyPublisher<Value, Never>()
     
@@ -58,12 +61,15 @@ public class TinyPublisher<U, Never> {
     public init() {}
     
     public func sink(receiveValue: @escaping ((U) -> Void)) -> AnyCancellable {
-        let cancellable = TinyPublisherCancellable<U, Never>(uuid: UUID(), publisher: self)
-        observers[cancellable.uuid] = receiveValue
+        let uuid = UUID()
+        let cancellable = AnyCancellable {
+            self.removeObserver(uuid)
+        }
+        observers[uuid] = receiveValue
         return cancellable
     }
     
-    fileprivate func removeObserver(uuid: UUID) {
+    private func removeObserver(_ uuid: UUID) {
         observers.removeValue(forKey: uuid)
     }
 

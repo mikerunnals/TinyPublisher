@@ -7,14 +7,13 @@ final class TinyPublisherTests: XCTestCase {
     
     func testTinyPublishedPropertyWrapper() {
         
-        struct Test {
+        class Test {
             @TinyPublished var property = false
         }
                 
         let test = Test()
 
         let e = expectation(description: "Expect sink event")
-
         test.$property.sink { value in
             XCTAssertEqual(true, value, "Expected value to be true")
             e.fulfill()
@@ -23,6 +22,30 @@ final class TinyPublisherTests: XCTestCase {
         test.property = true
 
         waitForExpectations(timeout: 1)
+    }
+    
+    func testTinyPublishedPropertyWrapperEnum() {
+        enum TestEnum {
+            case Case1
+            case Case2
+        }
+
+        class Test {
+            @TinyPublished var property = TestEnum.Case1
+        }
+                
+        let test = Test()
+
+        let e = expectation(description: "Expect sink event")
+        test.$property.sink { value in
+            XCTAssertEqual(.Case2, value, "Expected value to be true")
+            e.fulfill()
+        }.store(in: &cancellables)
+
+        test.property = .Case2
+
+        waitForExpectations(timeout: 1)
+
     }
 
     func testTinyPublisherBool() {
@@ -40,9 +63,20 @@ final class TinyPublisherTests: XCTestCase {
         
         waitForExpectations(timeout: 1)
     }
+    
+    func testAnyCancellableGivenDeinitThenCallsCancelClosure() {
+        let e = expectation(description: "cancel called on deinit")
+        var cancellable: AnyCancellable? = AnyCancellable {
+            e.fulfill()
+        }
+        XCTAssertNotNil(cancellable)
+        cancellable = nil
+        waitForExpectations(timeout: 1)
+    }
 
     static var allTests = [
         ("testTinyPublisherBool", testTinyPublisherBool),
-        ("testTinyPublishedPropertyWrapper", testTinyPublishedPropertyWrapper)
+        ("testTinyPublishedPropertyWrapper", testTinyPublishedPropertyWrapper),
+        ("testTinyPublishedPropertyWrapperEnum", testTinyPublishedPropertyWrapperEnum)
     ]
 }
