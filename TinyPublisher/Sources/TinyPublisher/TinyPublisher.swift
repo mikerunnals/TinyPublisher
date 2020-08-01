@@ -85,3 +85,19 @@ public class PassthroughSubject<Output, Never> : Subject { // TODO: change Never
         observers.forEach { $0.1(value) }
     }
 }
+
+public class CurrentValueSubject<Output, Never> : PassthroughSubject<Output, Never> { // TODO: change Never to Failure where Failure : Error
+    
+    public var value: Output
+    
+    public init(_ value: Output) {
+        self.value = value
+        super.init()
+    }
+    
+    override public func send(_ value: Output) {
+        self.value = value
+        super.send(value)
+    }
+}
+
