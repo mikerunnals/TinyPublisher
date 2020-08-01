@@ -47,25 +47,8 @@ final class TinyPublisherTests: XCTestCase {
         waitForExpectations(timeout: 1)
 
     }
-
-    func testTinyPublisherBool() {
-        
-        let publisher = PassthroughSubject<Bool, Never>()
-        
-        let e = expectation(description: "true")
-        
-        publisher.sink { value in
-            XCTAssertTrue(value)
-            e.fulfill()
-        }.store(in: &cancellables)
-        
-        publisher.send(true)
-        
-        waitForExpectations(timeout: 1)
-    }
     
     static var allTests = [
-        ("testTinyPublisherBool", testTinyPublisherBool),
         ("testTinyPublishedPropertyWrapper", testTinyPublishedPropertyWrapper),
         ("testTinyPublishedPropertyWrapperEnum", testTinyPublishedPropertyWrapperEnum)
     ]
