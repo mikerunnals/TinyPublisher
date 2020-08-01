@@ -11,7 +11,9 @@ Testing: example code unit test will be maintained that tests the ablity of Tiny
 
 [Documentation and Usage](TinyPublisher/README.md)
 
-Examples: 
+Examples Ideas: 
 
-Idea: an example app using TinyPublisher to implement dynamic Feature Flags.
+* App using TinyPublisher to implement dynamic Feature Flags
+
+* Classic Username and Password example from [WWDC Combine in Practie](https://developer.apple.com/videos/play/wwdc2019/721/)
 
