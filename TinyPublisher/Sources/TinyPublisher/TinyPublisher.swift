@@ -5,11 +5,11 @@ public protocol Cancellable {
 }
 
 public protocol Publisher {
-    
+    associatedtype Output
 }
 
 public protocol Subject: Publisher, AnyObject {
-    
+    func send(_ value: Output)
 }
 
 public final class AnyCancellable : Cancellable {
@@ -37,7 +37,7 @@ public final class AnyCancellable : Cancellable {
 @propertyWrapper
 public class TinyPublished<Value> { // TODO: How to name this Published<Value> and not collide with Foundation?
     private var value: Value
-    private let publisher = TinyPublisher<Value, Never>()
+    private let publisher = PassthroughSubject<Value, Never>()
     
     public init(wrappedValue: Value) {
         self.value = wrappedValue
@@ -57,18 +57,18 @@ public class TinyPublished<Value> { // TODO: How to name this Published<Value> a
         }
     }
     
-    public var projectedValue: TinyPublisher<Value, Never> {
+    public var projectedValue: PassthroughSubject<Value, Never> {
         publisher
     }
 }
 
-public class TinyPublisher<U, Never> {
+public class PassthroughSubject<Output, Never> : Subject { // TODO: change Never to Failure where Failure : Error
     
-    private var observers: [UUID: (U) -> Void] = [:]
+    private var observers: [UUID: (Output) -> Void] = [:]
 
     public init() {}
     
-    public func sink(receiveValue: @escaping ((U) -> Void)) -> AnyCancellable {
+    public func sink(receiveValue: @escaping ((Output) -> Void)) -> AnyCancellable {
         let uuid = UUID()
         let cancellable = AnyCancellable { [weak self] in
             self?.removeObserver(uuid)
@@ -81,7 +81,7 @@ public class TinyPublisher<U, Never> {
         observers.removeValue(forKey: uuid)
     }
 
-    public func send(_ update: U) {
-        observers.forEach { $0.1(update) }
+    public func send(_ value: Output) {
+        observers.forEach { $0.1(value) }
     }
 }

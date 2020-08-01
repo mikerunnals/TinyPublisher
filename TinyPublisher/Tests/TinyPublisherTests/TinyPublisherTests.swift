@@ -50,7 +50,7 @@ final class TinyPublisherTests: XCTestCase {
 
     func testTinyPublisherBool() {
         
-        let publisher = TinyPublisher<Bool, Never>()
+        let publisher = PassthroughSubject<Bool, Never>()
         
         let e = expectation(description: "true")
         
