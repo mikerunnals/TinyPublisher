@@ -4,6 +4,14 @@ public protocol Cancellable {
     func cancel()
 }
 
+public protocol Publisher {
+    
+}
+
+public protocol Subject: Publisher, AnyObject {
+    
+}
+
 public final class AnyCancellable : Cancellable {
     
     func store(in array: inout [AnyCancellable]) {
