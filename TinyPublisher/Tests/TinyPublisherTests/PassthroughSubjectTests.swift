@@ -21,6 +21,24 @@ final class PassthroughSubjectTests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
     
+    func testGivenSubscriberCancelledThenSinkClosureIsNotCalled() {
+        let publisher = PassthroughSubject<Bool, Never>()
+        
+        let e = expectation(description: "Expect NOT to be fulfilled!")
+        e.isInverted = true
+        
+        let cancellable = publisher.sink { value in
+            e.fulfill()
+        }
+        
+        cancellable.cancel()
+        
+        publisher.send(true)
+        
+        waitForExpectations(timeout: 1)
+
+    }
+    
     static var allTests = [
         ("testPassthroughSubjectBool", testPassthroughSubjectBool),
     ]
