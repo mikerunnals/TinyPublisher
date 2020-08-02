@@ -2,9 +2,17 @@
 /// As closely as possible this file should contain
 /// the Combine protocols unchanged to use in absentia
 
+import Foundation
+
 public protocol Cancellable {
     func cancel()
 }
+
+protocol CustomCombineIdentifierConvertible {
+    var combineIdentifier: CombineIdentifier { get }
+}
+
+protocol Subscription : Cancellable, CustomCombineIdentifierConvertible {}
 
 public protocol Subscriber {
     associatedtype Input

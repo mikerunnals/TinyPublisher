@@ -6,6 +6,7 @@ public final class AnyCancellable : Cancellable {
     }
     
     public func cancel() {
+        // TODO: must be thread-safe.
         cancelClosure?()
         cancelClosure = nil
     }

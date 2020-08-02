@@ -1,11 +1,10 @@
-import Foundation
 
 public class PassthroughSubject<Output, Failure> : Subject where Failure : Error {
     
     public typealias Output = Output
     public typealias Failure = Failure
 
-    private var cancellableSubscribers: [UUID: (Output) -> Void] = [:]
+    private var cancellableSubscribers: [CombineIdentifier: (Output) -> Void] = [:]
 
     public init() {}
     
@@ -14,16 +13,17 @@ public class PassthroughSubject<Output, Failure> : Subject where Failure : Error
     }
 
     public func sink(receiveValue: @escaping ((Output) -> Void)) -> AnyCancellable {
-        let uuid = UUID()
+        let identifier = CombineIdentifier()
         let cancellable = AnyCancellable { [weak self] in
-            self?.removeObserver(uuid)
+            self?.removeSubscriber(identifier)
         }
-        cancellableSubscribers[uuid] = receiveValue
+        cancellableSubscribers[identifier] = receiveValue
+        //subscribe(<#T##subscriber: Subscriber##Subscriber#>)
         return cancellable
     }
     
-    private func removeObserver(_ uuid: UUID) {
-        cancellableSubscribers.removeValue(forKey: uuid)
+    private func removeSubscriber(_ identifier: CombineIdentifier) {
+        cancellableSubscribers.removeValue(forKey: identifier)
     }
 
     public func send(_ value: Output) {
