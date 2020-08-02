@@ -3,7 +3,7 @@ import XCTest
 
 final class AnyCancellableTests: XCTestCase {
         
-    func testAnyCancellableGivenDeinitCalledThenCallsCancelClosure() {
+    func testGivenDeinitCalledThenCallsCancelClosure() {
         let e = expectation(description: "cancel called on deinit")
         var cancellable: AnyCancellable? = AnyCancellable {
             e.fulfill()
@@ -13,7 +13,7 @@ final class AnyCancellableTests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
     
-    func testAnyCancellableGivenCancelCalledThenCallsCancelClosure() {
+    func testGivenCancelCalledThenCallsCancelClosure() {
         let e = expectation(description: "cancel called on deinit")
         let cancellable: AnyCancellable? = AnyCancellable {
             e.fulfill()
@@ -25,7 +25,7 @@ final class AnyCancellableTests: XCTestCase {
     
     var deinitCancelClosure: XCTestExpectation? = nil
 
-    func testAnyCancellableGivenCancelCalledTwiceThenCallsCancelClosureOnlyOnce() {
+    func testGivenCancelCalledTwiceThenCallsCancelClosureOnlyOnce() {
         deinitCancelClosure = expectation(description: "expect cancel to be called on deinit")
         
         let cancellable: AnyCancellable = AnyCancellable {
@@ -43,8 +43,8 @@ final class AnyCancellableTests: XCTestCase {
     }
 
     static var allTests = [
-        ("testAnyCancellableGivenDeinitCalledThenCallsCancelClosure", testAnyCancellableGivenDeinitCalledThenCallsCancelClosure),
-        ("testAnyCancellableGivenCancelCalledThenCallsCancelClosure", testAnyCancellableGivenCancelCalledThenCallsCancelClosure),
-        ("testAnyCancellableGivenCancelCalledTwiceThenCallsCancelClosureOnlyOnce", testAnyCancellableGivenCancelCalledTwiceThenCallsCancelClosureOnlyOnce)
+        ("testGivenDeinitCalledThenCallsCancelClosure", testGivenDeinitCalledThenCallsCancelClosure),
+        ("testGivenCancelCalledThenCallsCancelClosure", testGivenCancelCalledThenCallsCancelClosure),
+        ("testGivenCancelCalledTwiceThenCallsCancelClosureOnlyOnce", testGivenCancelCalledTwiceThenCallsCancelClosureOnlyOnce)
     ]
 }

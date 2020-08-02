@@ -1,11 +1,11 @@
 import XCTest
 @testable import TinyPublisher
 
-final class TinyPublisherTests: XCTestCase {
+final class TinyPublishedTests: XCTestCase {
     
     var cancellables: [AnyCancellable] = []
     
-    func testTinyPublishedPropertyWrapper() {
+    func testPropertyWrapperBool() {
         
         class Test {
             @TinyPublished var property = false
@@ -24,7 +24,7 @@ final class TinyPublisherTests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
     
-    func testTinyPublishedPropertyWrapperEnum() {
+    func testPropertyWrapperEnum() {
         enum TestEnum {
             case Case1
             case Case2
@@ -49,7 +49,7 @@ final class TinyPublisherTests: XCTestCase {
     }
     
     static var allTests = [
-        ("testTinyPublishedPropertyWrapper", testTinyPublishedPropertyWrapper),
-        ("testTinyPublishedPropertyWrapperEnum", testTinyPublishedPropertyWrapperEnum)
+        ("testPropertyWrapperBool", testPropertyWrapperBool),
+        ("testPropertyWrapperEnum", testPropertyWrapperEnum)
     ]
 }
