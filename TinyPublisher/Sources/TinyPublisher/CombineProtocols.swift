@@ -23,20 +23,24 @@ public enum Subscribers {
 //        static let none: Subscribers.Demand
     }
     
-    @frozen enum Completion<Failure> where Failure : Error {
+    @frozen public enum Completion<Failure> where Failure : Error {
         case finished
         case failure(Failure)
     }
     
 }
 
-public protocol Subscriber {
+public protocol Subscriber : CustomCombineIdentifierConvertible where Failure: Error {
     associatedtype Input
     associatedtype Failure
     
     func receive(_ input: Self.Input) -> Subscribers.Demand
     
     func receive() -> Subscribers.Demand
+    
+    func receive(subscription: Subscription)
+
+    func receive(completion: Subscribers.Completion<Failure>)
 }
 
 public protocol Publisher {

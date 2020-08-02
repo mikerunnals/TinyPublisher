@@ -1,21 +1,54 @@
 
 extension Publisher {
-    
-    func sink(receiveCompletion: @escaping ((Subscribers.Completion<Self.Failure>) -> Void), receiveValue: @escaping ((Self.Output) -> Void)) -> AnyCancellable {
+        
+    func sink(receiveCompletion: ((Subscribers.Completion<Self.Failure>) -> Void)? = nil,
+              receiveValue: @escaping ((Self.Output) -> Void)) -> AnyCancellable {
    
-        let identifier = CombineIdentifier()
-        let subscriber = Subscriber(identifier)
-        self.subscribe(Subscriber)
+        let subscriber = ClosureSubscriber<Self.Output, Self.Failure>(receiveCompletion: receiveCompletion,
+                                                                      receiveValue: receiveValue)
+        subscribe(subscriber)
 
-        return AnyCancellable(cancelClosure: nil)
-    }
-    
-    func assign<Root>(to keyPath: ReferenceWritableKeyPath<Root, Self.Output>, on object: Root) -> AnyCancellable {
-        // TODO: call subscribe on publisher to get subscription then return it as AnyCancellable
-        return AnyCancellable(cancelClosure: nil)
+        return subscriber.eraseToAnyCancellable()
     }
 }
 
-struct ClosureSubscriber : Subscriber {
+class ClosureSubscriber<Input, Failure> : Subscriber where Failure : Error {
     
+    let combineIdentifier = CombineIdentifier()
+    
+    typealias Input = Input
+    typealias Failure = Failure
+        
+    private var receiveCompletion: ((Subscribers.Completion<Failure>) -> Void)?
+    private var receiveValue: ((Input) -> Void)
+    
+    fileprivate var subscription: Subscription!
+    
+    init(receiveCompletion: ((Subscribers.Completion<Failure>) -> Void)? = nil,
+         receiveValue: @escaping ((Input) -> Void)) {
+        self.receiveCompletion = receiveCompletion
+        self.receiveValue = receiveValue
+    }
+    
+    func receive(_ input: Input) -> Subscribers.Demand {
+        receiveValue(input)
+        return .unlimited
+    }
+    
+    func receive() -> Subscribers.Demand {
+        return .unlimited
+    }
+    
+    func receive(subscription: Subscription) {
+        self.subscription = subscription
+    }
+    
+    func receive(completion: Subscribers.Completion<Failure>) {
+        receiveCompletion?(completion)
+    }
+    
+    func eraseToAnyCancellable() -> AnyCancellable {
+        let subscriptionCancellable = SubscriptionCancellable(subscriber: self, subscription: subscription)
+        return AnyCancellable(cancellable: subscriptionCancellable)
+    }
 }

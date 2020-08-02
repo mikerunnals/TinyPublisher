@@ -1,12 +1,53 @@
 
-public final class AnyCancellable : Cancellable {
+public final class AnyCancellable {
     
     func store(in array: inout [AnyCancellable]) {
         array.append(self)
     }
     
     public func cancel() {
+        cancellable?.cancel()
+        cancellable = nil
+    }
+    
+    private var cancellable: Cancellable?
+        
+    init(cancellable: Cancellable) {
+        self.cancellable = cancellable
+    }
+    
+    init(cancelClosure: (() -> Void)?) {
+        self.cancellable = ClosureCancellable(cancelClosure: cancelClosure)
+    }
+    
+    deinit {
+        cancel()
+    }
+}
+
+public final class SubscriptionCancellable<S: Subscriber> : Cancellable {
+        
+    public func cancel() {
         // TODO: must be thread-safe.
+        subscription.cancel()
+    }
+    
+    private let subscriber: S
+    private let subscription: Subscription
+
+    init(subscriber: S, subscription: Subscription) {
+        self.subscriber = subscriber
+        self.subscription = subscription
+    }
+    
+    deinit {
+        cancel()
+    }
+}
+
+public final class ClosureCancellable : Cancellable {
+        
+    public func cancel() {
         cancelClosure?()
         cancelClosure = nil
     }
