@@ -8,20 +8,40 @@ public protocol Cancellable {
     func cancel()
 }
 
-protocol CustomCombineIdentifierConvertible {
+public protocol CustomCombineIdentifierConvertible {
     var combineIdentifier: CombineIdentifier { get }
 }
 
-protocol Subscription : Cancellable, CustomCombineIdentifierConvertible {}
+public protocol Subscription : Cancellable, CustomCombineIdentifierConvertible {}
+
+public enum Subscribers {
+    @frozen public struct Demand {
+        static let unlimited = Demand()
+//        static func max(_ todo: Int) -> Subscribers.Demand {
+//            return unlimited
+//        }
+//        static let none: Subscribers.Demand
+    }
+    
+    @frozen enum Completion<Failure> where Failure : Error {
+        case finished
+        case failure(Failure)
+    }
+    
+}
 
 public protocol Subscriber {
     associatedtype Input
     associatedtype Failure
+    
+    func receive(_ input: Self.Input) -> Subscribers.Demand
+    
+    func receive() -> Subscribers.Demand
 }
 
 public protocol Publisher {
     associatedtype Output
-    associatedtype Failure //: Error TODO
+    associatedtype Failure: Error
     
     func subscribe<S: Subscriber>(_ subscriber:S) where S.Input == Output, S.Failure == Failure
 }

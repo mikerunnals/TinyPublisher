@@ -1,9 +1,9 @@
 
 import Foundation
 
-struct CombineIdentifier : CustomStringConvertible, Equatable, Hashable {
+public struct CombineIdentifier : CustomStringConvertible, Equatable, Hashable {
     
-    var description: String {
+    public var description: String {
         identifier.description
     }
     

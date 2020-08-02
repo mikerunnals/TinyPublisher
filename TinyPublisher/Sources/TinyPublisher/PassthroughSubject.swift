@@ -12,15 +12,15 @@ public class PassthroughSubject<Output, Failure> : Subject where Failure : Error
         // TODO: ???
     }
 
-    public func sink(receiveValue: @escaping ((Output) -> Void)) -> AnyCancellable {
-        let identifier = CombineIdentifier()
-        let cancellable = AnyCancellable { [weak self] in
-            self?.removeSubscriber(identifier)
-        }
-        cancellableSubscribers[identifier] = receiveValue
-        //subscribe(<#T##subscriber: Subscriber##Subscriber#>)
-        return cancellable
-    }
+//    public func sink(receiveValue: @escaping ((Output) -> Void)) -> AnyCancellable {
+//        let identifier = CombineIdentifier()
+//        let cancellable = AnyCancellable { [weak self] in
+//            self?.removeSubscriber(identifier)
+//        }
+//        cancellableSubscribers[identifier] = receiveValue
+//        //subscribe(<#T##subscriber: Subscriber##Subscriber#>)
+//        return cancellable
+//    }
     
     private func removeSubscriber(_ identifier: CombineIdentifier) {
         cancellableSubscribers.removeValue(forKey: identifier)
