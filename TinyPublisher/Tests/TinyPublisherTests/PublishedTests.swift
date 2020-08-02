@@ -8,7 +8,7 @@ final class TinyPublishedTests: XCTestCase {
         var cancellables: [TinyPublisher.AnyCancellable] = []
         
         class Test {
-            @TinyPublished var property = false
+            @TinyPublisher.Published var property = false
         }
                 
         let test = Test()
@@ -35,7 +35,7 @@ final class TinyPublishedTests: XCTestCase {
         var cancellables: [Combine.AnyCancellable] = []
         
         class Test {
-            @Published var property = false
+            @Combine.Published var property = false
         }
                 
         let test = Test()

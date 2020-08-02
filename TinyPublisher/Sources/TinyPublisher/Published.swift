@@ -1,6 +1,6 @@
 
 @propertyWrapper
-public class TinyPublished<Value> { // TODO: How to name this Published<Value> and not collide with Foundation?
+public class Published<Value> {
     private var value: Value
     let subject: CurrentValueSubject<Value, Never>
     
