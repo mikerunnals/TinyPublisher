@@ -24,7 +24,6 @@ final class AnyCancellableTests: XCTestCase {
         cancellable = nil
         waitForExpectations(timeout: 1)
     }
-
     
     func testGivenCancelCalledThenCallsCancelClosure() {
         let e = expectation(description: "cancel called on deinit")
@@ -47,7 +46,6 @@ final class AnyCancellableTests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
 
-    
     var deinitCancelClosure: XCTestExpectation? = nil
 
     func testGivenCancelCalledTwiceThenCallsCancelClosureOnlyOnce() {
