@@ -4,7 +4,6 @@ import Combine
 
 final class TinyPublishedTests: XCTestCase {
     
-    
     func testPropertyWrapperBool() {
         var cancellables: [TinyPublisher.AnyCancellable] = []
         
@@ -14,17 +13,23 @@ final class TinyPublishedTests: XCTestCase {
                 
         let test = Test()
 
-        let e = expectation(description: "Expect sink event")
+        let es: [(value: Bool, expectation: XCTestExpectation)] =
+            [(value: false, expectation: expectation(description: "Expect initial sink event")),
+             (value: true, expectation: expectation(description: "Expect sink event"))]
+        var things = es.enumerated().makeIterator()
+        
         test.$property.sink { value in
-            XCTAssertEqual(true, value, "Expected value to be true")
-            e.fulfill()
+            guard let (_, thing) = things.next() else { XCTFail(); return }
+
+            XCTAssertEqual(thing.value, value, "Expected value to be true")
+            thing.expectation.fulfill()
         }.store(in: &cancellables)
 
         test.property = true
 
         waitForExpectations(timeout: 1)
     }
-    
+
     @available(iOS 13.0, *)
     func testCombinePropertyWrapperBool() {
         var cancellables: [Combine.AnyCancellable] = []
@@ -35,10 +40,16 @@ final class TinyPublishedTests: XCTestCase {
                 
         let test = Test()
 
-        let e = expectation(description: "Expect sink event")
+        let es: [(value: Bool, expectation: XCTestExpectation)] =
+            [(value: false, expectation: expectation(description: "Expect initial sink event")),
+             (value: true, expectation: expectation(description: "Expect sink event"))]
+        var things = es.enumerated().makeIterator()
+        
         test.$property.sink { value in
-            XCTAssertEqual(true, value, "Expected value to be true")
-            e.fulfill()
+            guard let (_, thing) = things.next() else { XCTFail(); return }
+
+            XCTAssertEqual(thing.value, value, "Expected value to be true")
+            thing.expectation.fulfill()
         }.store(in: &cancellables)
 
         test.property = true
@@ -46,61 +57,7 @@ final class TinyPublishedTests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
     
-    func testPropertyWrapperEnum() {
-        var cancellables: [TinyPublisher.AnyCancellable] = []
-        
-        enum TestEnum {
-            case Case1
-            case Case2
-        }
-
-        class Test {
-            @TinyPublished var property = TestEnum.Case1
-        }
-                
-        let test = Test()
-
-        let e = expectation(description: "Expect sink event")
-        test.$property.sink { value in
-            XCTAssertEqual(.Case2, value, "Expected value to be true")
-            e.fulfill()
-        }.store(in: &cancellables)
-
-        test.property = .Case2
-
-        waitForExpectations(timeout: 1)
-
-    }
-    
-    @available(iOS 13.0, *)
-    func testCombinePropertyWrapperEnum() {
-        var cancellables: [Combine.AnyCancellable] = []
-        
-        enum TestEnum {
-            case Case1
-            case Case2
-        }
-
-        class Test {
-            @Published var property = TestEnum.Case1
-        }
-                
-        let test = Test()
-
-        let e = expectation(description: "Expect sink event")
-        test.$property.sink { value in
-            XCTAssertEqual(.Case2, value, "Expected value to be true")
-            e.fulfill()
-        }.store(in: &cancellables)
-
-        test.property = .Case2
-
-        waitForExpectations(timeout: 1)
-
-    }
-
     static var allTests = [
-        ("testPropertyWrapperBool", testPropertyWrapperBool),
-        ("testPropertyWrapperEnum", testPropertyWrapperEnum)
+        ("testPropertyWrapperBool", testPropertyWrapperBool)
     ]
 }
