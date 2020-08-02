@@ -7,33 +7,33 @@ final class PassthroughSubjectTests: XCTestCase {
         
     func testPassthroughSubjectBool() {
         
-        let publisher = PassthroughSubject<Bool, Never>()
+        let subject = PassthroughSubject<Bool, Never>()
         
         let e = expectation(description: "true")
         
-        publisher.sink { value in
+        subject.sink { value in
             XCTAssertTrue(value)
             e.fulfill()
         }.store(in: &cancellables)
         
-        publisher.send(true)
+        subject.send(true)
         
         waitForExpectations(timeout: 1)
     }
     
     func testGivenSubscriberCancelledThenSinkClosureIsNotCalled() {
-        let publisher = PassthroughSubject<Bool, Never>()
+        let subject = PassthroughSubject<Bool, Never>()
         
         let e = expectation(description: "Expect NOT to be fulfilled!")
         e.isInverted = true
         
-        let cancellable = publisher.sink { value in
+        let cancellable = subject.sink { value in
             e.fulfill()
         }
         
         cancellable.cancel()
         
-        publisher.send(true)
+        subject.send(true)
         
         waitForExpectations(timeout: 1)
 
