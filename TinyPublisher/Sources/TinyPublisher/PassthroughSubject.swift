@@ -1,32 +1,40 @@
-import Foundation
 
 public class PassthroughSubject<Output, Failure> : Subject where Failure : Error {
     
     public typealias Output = Output
     public typealias Failure = Failure
-
-    private var cancellableSubscribers: [UUID: (Output) -> Void] = [:]
+    
+    private var cancellableSubscribers: [CombineIdentifier : (Output) -> Void] = [:]
 
     public init() {}
     
     public func subscribe<S>(_ subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
-        // TODO: ???
-    }
-
-    public func sink(receiveValue: @escaping ((Output) -> Void)) -> AnyCancellable {
-        let uuid = UUID()
-        let cancellable = AnyCancellable { [weak self] in
-            self?.removeObserver(uuid)
-        }
-        cancellableSubscribers[uuid] = receiveValue
-        return cancellable
+        cancellableSubscribers[subscriber.combineIdentifier] = { _ = subscriber.receive($0) }
+        subscriber.receive(subscription: MySubscription(subscriber.combineIdentifier) { [weak self] in
+            self?.removeSubscriber(subscriber.combineIdentifier)
+        })
     }
     
-    private func removeObserver(_ uuid: UUID) {
-        cancellableSubscribers.removeValue(forKey: uuid)
+    private func removeSubscriber(_ identifier: CombineIdentifier) {
+        cancellableSubscribers.removeValue(forKey: identifier)
     }
 
     public func send(_ value: Output) {
         cancellableSubscribers.forEach { $0.1(value) }
+    }
+}
+
+fileprivate class MySubscription : Subscription {
+    
+    let combineIdentifier: CombineIdentifier
+    let cancelCall: () -> Void
+    
+    init(_ combineIdentifier: CombineIdentifier, _ cancelCall: @escaping () -> Void) {
+        self.combineIdentifier = combineIdentifier
+        self.cancelCall = cancelCall
+    }
+    
+    func cancel() {
+        cancelCall()
     }
 }

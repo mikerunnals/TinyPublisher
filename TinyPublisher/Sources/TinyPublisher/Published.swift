@@ -1,15 +1,17 @@
 
 @propertyWrapper
-public class TinyPublished<Value> { // TODO: How to name this Published<Value> and not collide with Foundation?
+public class Published<Value> {
     private var value: Value
-    private let subject = PassthroughSubject<Value, Never>()
+    let subject: CurrentValueSubject<Value, Never>
     
     public init(wrappedValue: Value) {
         self.value = wrappedValue
+        subject = CurrentValueSubject<Value, Never>(wrappedValue)
     }
     
     public init(initialValue: Value) {
         self.value = initialValue
+        subject = CurrentValueSubject<Value, Never>(initialValue)
     }
         
     public var wrappedValue: Value {
