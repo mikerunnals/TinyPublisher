@@ -1,6 +1,6 @@
 
 /// As closely as possible this file should contain
-/// the Combine protocols used in absentia
+/// the Combine protocols unchanged to use in absentia
 
 public protocol Cancellable {
     func cancel()
