@@ -9,10 +9,10 @@ public class PassthroughSubject<Output, Failure> : Subject where Failure : Error
     public init() {}
     
     public func subscribe<S>(_ subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
-        cancellableSubscribers[subscriber.combineIdentifier] = { _ = subscriber.receive($0) }
         subscriber.receive(subscription: MySubscription(subscriber.combineIdentifier) { [weak self] in
             self?.removeSubscriber(subscriber.combineIdentifier)
         })
+        cancellableSubscribers[subscriber.combineIdentifier] = { _ = subscriber.receive($0) }
     }
     
     private func removeSubscriber(_ identifier: CombineIdentifier) {
