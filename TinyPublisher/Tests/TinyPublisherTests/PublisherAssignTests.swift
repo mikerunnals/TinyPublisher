@@ -10,13 +10,26 @@ final class PublisherAssignTests: XCTestCase {
         
         let subject = TinyPublisher.PassthroughSubject<Bool, Never>()
         
-        let e = expectation(description: "true")
+        class Test {
+            
+            let expectation: XCTestExpectation
+            
+            var value: Bool = false {
+                didSet {
+                    expectation.fulfill()
+                    XCTAssertTrue(value)
+                }
+            }
+            
+            init(expectation: XCTestExpectation) {
+                self.expectation = expectation
+            }
+        }
         
-        subject.sink { value in
-            XCTAssertTrue(value)
-            e.fulfill()
-        }.store(in: &cancellables)
+        let test = Test(expectation: expectation(description: "expecting true"))
         
+        subject.assign(to: \.value, on: test).store(in: &cancellables)
+
         subject.send(true)
         
         waitForExpectations(timeout: 1)
@@ -29,62 +42,32 @@ final class PublisherAssignTests: XCTestCase {
         
         let subject = Combine.PassthroughSubject<Bool, Never>()
         
-        struct Test {
-            var value: Bool
+        class Test {
+            
+            let expectation: XCTestExpectation
+            
+            var value: Bool = false {
+                didSet {
+                    expectation.fulfill()
+                    XCTAssertTrue(value)
+                }
+            }
+            
+            init(expectation: XCTestExpectation) {
+                self.expectation = expectation
+            }
         }
         
-        let e = expectation(description: "true")
+        let test = Test(expectation: expectation(description: "expecting true"))
         
-        subject.sink { value in
-            XCTAssertTrue(value)
-            e.fulfill()
-        }.store(in: &cancellables)
+        subject.assign(to: \.value, on: test).store(in: &cancellables)
         
         subject.send(true)
         
         waitForExpectations(timeout: 1)
     }
-
-    
-    func testGivenSubscriberCancelledThenSinkClosureIsNotCalled() {
-        let subject = TinyPublisher.PassthroughSubject<Bool, Never>()
-        
-        let e = expectation(description: "Expect NOT to be fulfilled!")
-        e.isInverted = true
-        
-        let cancellable = subject.sink { value in
-            e.fulfill()
-        }
-        
-        cancellable.cancel()
-        
-        subject.send(true)
-        
-        waitForExpectations(timeout: 1)
-
-    }
-    
-    @available(iOS 13.0, *)
-    func testCombineGivenSubscriberCancelledThenSinkClosureIsNotCalled() {
-        let subject = Combine.PassthroughSubject<Bool, Never>()
-        
-        let e = expectation(description: "Expect NOT to be fulfilled!")
-        e.isInverted = true
-        
-        let cancellable = subject.sink { value in
-            e.fulfill()
-        }
-        
-        cancellable.cancel()
-        
-        subject.send(true)
-        
-        waitForExpectations(timeout: 1)
-
-    }
-
     
     static var allTests = [
-        ("testPassthroughSubjectBool", testPassthroughSubjectBool),
+        ("testPassthroughSubjectBool", testAssignBool),
     ]
 }
