@@ -13,7 +13,7 @@ extension Publisher {
     
     func assign<Root>(to keyPath: ReferenceWritableKeyPath<Root, Output>, on object: Root) -> AnyCancellable where Self.Failure == Never {
         let subscriber = AssignToSubscriber<Self.Output, Self.Failure>()
-        return subscriber
+        return subscriber.eraseToAnyCancellable()
     }
 }
 
@@ -42,11 +42,9 @@ fileprivate class AssignToSubscriber<Input, Failure> : Subscriber where Failure 
     }
 
     func receive(subscription: Subscription) {
-       
     }
 
     func receive(completion: Subscribers.Completion<Failure>) {
-       
     }
 }
 
