@@ -2,7 +2,7 @@ import XCTest
 @testable import TinyPublisher
 import Combine
 
-final class PublisherAssignTests: XCTestCase {
+final class AssignToTests: XCTestCase {
     
     func testAssignBool() {
         

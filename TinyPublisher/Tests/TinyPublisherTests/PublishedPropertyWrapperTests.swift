@@ -2,7 +2,7 @@ import XCTest
 @testable import TinyPublisher
 import Combine
 
-final class TinyPublishedTests: XCTestCase {
+final class PublishedPropertyWrapperTests: XCTestCase {
     
     func testPropertyWrapperBool() {
         var cancellables: [TinyPublisher.AnyCancellable] = []

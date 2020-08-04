@@ -25,7 +25,7 @@ public final class AnyCancellable {
     }
 }
 
-public final class SubscriptionCancellable<S: Subscriber> : Cancellable {
+final class SubscriptionCancellable<S: Subscriber> : Cancellable {
         
     public func cancel() {
         // TODO: must be thread-safe.
@@ -45,7 +45,7 @@ public final class SubscriptionCancellable<S: Subscriber> : Cancellable {
     }
 }
 
-public final class ClosureCancellable : Cancellable {
+final class ClosureCancellable : Cancellable {
         
     public func cancel() {
         cancelClosure?()
