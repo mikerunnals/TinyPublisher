@@ -5,7 +5,7 @@ A Tiny Stand-in that mimics some of Swift Combine API
 
 # Goal
 
-So Application Developers who must target iOS 10, 11 or 12 and cannot import Combine can:
+So Application Developers who annot import Combine becuase they target iOS 10, 11 or 12 can:
   
   "...get started right away. Compose small parts of your application into custom Publishers, identify small pieces of logic you can break up into little tiny Publishers and use composition along the way to chain them all together.
 You can totally adopt incrementally. You don't have to change everything right away or, you know, you can mix and match. We saw with Future how you can bring things in that you already have today. You can compose callbacks and other things using Future like we saw."
