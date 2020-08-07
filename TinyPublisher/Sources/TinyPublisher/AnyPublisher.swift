@@ -1,24 +1,23 @@
 extension Publisher {
     func eraseToAnyPublisher() -> AnyPublisher<Self.Output, Self.Failure> {
-        return AnyPublisher(subscribeClosure: { self.subscribe($0) })
+        return AnyPublisher(self)
     }
 }
 
 @frozen public struct AnyPublisher<Output, Failure>: Publisher where Failure : Error {
     
-    let subscribeClosure: (_ S: Subscriber) -> () 
-        
-    public func subscribe<S>(_ subscriber: S) where S : Subscriber, Self.Failure == S.Failure, Self.Output == S.Input {
-        subscribeClosure(subscriber)
-    }
+    public typealias Output = Output
+    public typealias Failure = Failure
     
-}
-
-protocol SubscribeClosure {
-    associatedtype Input
-    associatedtype Failure: Error
-
-    typealias subscribe = (_ S: Subscriber) -> Void
-
-    func perform<S: Subscriber>(then handler: @escaping S) where S : Subscriber, Self.Failure == S.Failure, Self.Input == S.Input
+    let erasedPublisher: Any
+    
+    init<P: Publisher>(_ publisher: P) where Self.Failure == P.Failure, Self.Output == P.Output {
+        self.erasedPublisher = publisher
+    }
+        
+    public func subscribe<S>(_ subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
+        if let publisher = erasedPublisher as? Publisher {
+            
+        }
+    }
 }
