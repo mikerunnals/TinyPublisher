@@ -1,5 +1,5 @@
 
-public final class AnyCancellable {
+public final class AnyCancellable : Cancellable {
     
     func store(in array: inout [AnyCancellable]) {
         array.append(self)

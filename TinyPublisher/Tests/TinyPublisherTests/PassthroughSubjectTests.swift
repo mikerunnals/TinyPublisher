@@ -9,10 +9,11 @@ final class PassthroughSubjectTests: XCTestCase {
         var cancellables: [TinyPublisher.AnyCancellable] = []
         
         let subject = TinyPublisher.PassthroughSubject<Bool, Never>()
+        let publisher = subject.eraseToAnyPublisher()
         
         let e = expectation(description: "true")
         
-        subject.sink { value in
+        publisher.sink { value in
             XCTAssertTrue(value)
             e.fulfill()
         }.store(in: &cancellables)
@@ -28,10 +29,11 @@ final class PassthroughSubjectTests: XCTestCase {
         var cancellables: [Combine.AnyCancellable] = []
         
         let subject = Combine.PassthroughSubject<Bool, Never>()
-        
+        let publisher = subject.eraseToAnyPublisher()
+
         let e = expectation(description: "true")
         
-        subject.sink { value in
+        publisher.sink { value in
             XCTAssertTrue(value)
             e.fulfill()
         }.store(in: &cancellables)
