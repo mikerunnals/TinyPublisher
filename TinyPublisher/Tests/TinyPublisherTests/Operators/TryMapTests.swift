@@ -18,7 +18,7 @@ final class TryMapTests: XCTestCase {
     func testTiny() {
 
         var s = ""
-                
+
         let numbers = [5, 4, 3, 2, 1, 0]
         _ = numbers.publisher
             .tryMap { try romanNumeral(from: $0) }
