@@ -12,9 +12,14 @@ final class MapTests: XCTestCase {
         let romanNumeralDict: [Int : String] =
            [1:"I", 2:"II", 3:"III", 4:"IV", 5:"V"]
         
-        _ = numbers.publisher
+        let subject = TinyPublisher.PassthroughSubject<Int, Never>()
+        let publisher = subject.eraseToAnyPublisher()
+        
+        _ = publisher
             .map { romanNumeralDict[$0] ?? "(unknown)" }
             .sink { s = s + "\($0)" + " " }
+        
+        numbers.forEach { subject.send($0) }
         
         XCTAssertEqual("V IV III II I (unknown) ", s)
 
