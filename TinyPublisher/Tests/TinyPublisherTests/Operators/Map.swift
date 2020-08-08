@@ -15,11 +15,19 @@ final class MapTests: XCTestCase {
         let subject = TinyPublisher.PassthroughSubject<Int, Never>()
         let publisher = subject.eraseToAnyPublisher()
         
+        let e = expectation(description: "Expect last item is \"(unknown)\"")
         _ = publisher
             .map { romanNumeralDict[$0] ?? "(unknown)" }
-            .sink { s = s + "\($0)" + " " }
+            .sink { romanNum in
+                s = s + "\(romanNum)" + " "
+                if romanNum == "(unknown)" {
+                    e.fulfill()
+                }
+        }
         
         numbers.forEach { subject.send($0) }
+        
+        waitForExpectations(timeout: 3)
         
         XCTAssertEqual("V IV III II I (unknown) ", s)
 

@@ -12,7 +12,7 @@ extension Publisher {
     }
 }
 
-fileprivate class ClosureSubscriber<Input, Failure> : Subscriber where Failure : Error {
+class ClosureSubscriber<Input, Failure> : Subscriber where Failure : Error {
     
     let combineIdentifier = CombineIdentifier()
 
@@ -22,7 +22,7 @@ fileprivate class ClosureSubscriber<Input, Failure> : Subscriber where Failure :
     private var receiveCompletion: ((Subscribers.Completion<Failure>) -> Void)?
     private var receiveValue: ((Input) -> Void)
     
-    fileprivate var subscription: Subscription!
+    fileprivate var subscription: Subscription?
     
     init(receiveCompletion: ((Subscribers.Completion<Failure>) -> Void)? = nil,
          receiveValue: @escaping ((Input) -> Void)) {
@@ -48,7 +48,10 @@ fileprivate class ClosureSubscriber<Input, Failure> : Subscriber where Failure :
     }
     
     func eraseToAnyCancellable() -> AnyCancellable {
-        let subscriptionCancellable = SubscriptionCancellable(subscriber: self, subscription: subscription)
+        let subscriptionCancellable = ClosureCancellable {
+            // capture self strongly? so anyone holding the AnyCancellable will hold this
+            self.subscription?.cancel()
+        }
         return AnyCancellable(cancellable: subscriptionCancellable)
     }
 }

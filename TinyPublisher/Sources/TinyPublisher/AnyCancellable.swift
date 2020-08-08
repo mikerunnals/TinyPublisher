@@ -17,27 +17,7 @@ public final class AnyCancellable : Cancellable {
     }
     
     init(cancelClosure: (() -> Void)?) {
-        self.cancellable = ClosureCancellable(cancelClosure: cancelClosure)
-    }
-    
-    deinit {
-        cancel()
-    }
-}
-
-final class SubscriptionCancellable<S: Subscriber> : Cancellable {
-        
-    public func cancel() {
-        // TODO: must be thread-safe.
-        subscription.cancel()
-    }
-    
-    private let subscriber: S
-    private let subscription: Subscription
-
-    init(subscriber: S, subscription: Subscription) {
-        self.subscriber = subscriber
-        self.subscription = subscription
+        self.cancellable = ClosureCancellable(cancelClosure)
     }
     
     deinit {
@@ -54,7 +34,7 @@ final class ClosureCancellable : Cancellable {
     
     private var cancelClosure: (() -> Void)?
         
-    init(cancelClosure: (() -> Void)?) {
+    init(_ cancelClosure: (() -> Void)?) {
         self.cancelClosure = cancelClosure
     }
     
