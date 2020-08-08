@@ -33,8 +33,13 @@ extension Publishers {
         }
         
         private func receiveCompletion(_ subscriber: AnySubscriber<Output, Failure>) -> ((Subscribers.Completion<Upstream.Failure>) -> Void)? {
-            return { completion in
-                //subscriber.receive(completion: completion)
+            return { upstreamCompletion in
+                switch upstreamCompletion {
+                case .finished:
+                    subscriber.receive(completion: .finished)
+                case .failure(let failure):
+                    subscriber.receive(completion: .failure(failure))
+                }
             }
         }
         
@@ -42,7 +47,7 @@ extension Publishers {
             return { input in
                 do {
                     let output = try self.transform(input)
-                    subscriber.receive(output)
+                    subscriber.receive(output) // MLR TODO??
                 } catch {
                     subscriber.receive(completion: .failure(error))
                 }
