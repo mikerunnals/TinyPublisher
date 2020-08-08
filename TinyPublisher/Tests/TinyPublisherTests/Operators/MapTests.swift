@@ -11,7 +11,7 @@ final class MapTests: XCTestCase {
         let numbers = [5, 4, 3, 2, 1, 0]
         let romanNumeralDict: [Int : String] =
            [1:"I", 2:"II", 3:"III", 4:"IV", 5:"V"]
-        _ = numbers.publisher
+        _ = numbers.publisher.eraseToAnyPublisher()
             .map { romanNumeralDict[$0] ?? "(unknown)" }
             .sink { s = s + "\($0)" + " " }
         
