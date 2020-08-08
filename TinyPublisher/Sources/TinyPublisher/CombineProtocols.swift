@@ -50,6 +50,10 @@ public protocol Publisher {
     func subscribe<S: Subscriber>(_ subscriber:S) where S.Input == Output, S.Failure == Failure
 }
 
+enum Publishers {
+    // see list here https://developer.apple.com/documentation/combine/publishers
+}
+
 public protocol Subject: Publisher, AnyObject {
     func send(_ value: Output)
 }

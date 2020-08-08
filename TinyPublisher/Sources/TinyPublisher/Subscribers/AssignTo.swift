@@ -20,7 +20,7 @@ fileprivate class AssignToSubscriber<Input, Failure, Root> : Subscriber where Fa
     typealias Input = Input
     typealias Failure = Failure
 
-    fileprivate var subscription: Subscription!
+    fileprivate var subscription: Subscription?
     
     init(keyPath: ReferenceWritableKeyPath<Root, Input>, rootObject: Root) {
         self.keyPath = keyPath
@@ -28,7 +28,10 @@ fileprivate class AssignToSubscriber<Input, Failure, Root> : Subscriber where Fa
     }
     
     func eraseToAnyCancellable() -> AnyCancellable {
-        let subscriptionCancellable = SubscriptionCancellable(subscriber: self, subscription: subscription)
+        let subscriptionCancellable = ClosureCancellable {
+            // capture self strongly? so anyone holding the AnyCancellable will hold this
+            self.subscription?.cancel()
+        }
         return AnyCancellable(cancellable: subscriptionCancellable)
     }
     
@@ -46,5 +49,6 @@ fileprivate class AssignToSubscriber<Input, Failure, Root> : Subscriber where Fa
     }
 
     func receive(completion: Subscribers.Completion<Failure>) {
+        // TODO?
     }
 }
