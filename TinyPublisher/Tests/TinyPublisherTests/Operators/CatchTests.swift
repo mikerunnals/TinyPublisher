@@ -4,7 +4,7 @@ import XCTest
 
 final class CatchTests: XCTestCase {
     
-    func testCombine() {
+    func testTiny() {
         struct SimpleError: Error {}
         let numbers = [5, 4, 3, 2, 1, 0, 9, 8, 7, 6]
         var result: Int? = nil

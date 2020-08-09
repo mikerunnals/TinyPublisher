@@ -15,7 +15,7 @@ extension Publishers {
         public typealias Failure = Failure
         
         private let elements: Elements
-        private let subject = TinyPublisher.PassthroughSubject<Elements.Element, Failure>()
+        private let subject = PassthroughSubject<Elements.Element, Failure>()
         
         init(_ elements: Elements) {
             self.elements = elements

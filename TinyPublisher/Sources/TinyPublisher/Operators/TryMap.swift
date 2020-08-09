@@ -15,7 +15,7 @@ extension Publishers {
 
         public let transform: (Upstream.Output) throws -> Output
         
-        private var cancellables: [TinyPublisher.AnyCancellable] = []
+        private var cancellables: [AnyCancellable] = []
 
         public init(upstream: Upstream, transform: @escaping (Upstream.Output) throws -> Output) {
             self.upstream = upstream
