@@ -15,12 +15,12 @@ public protocol CustomCombineIdentifierConvertible {
 public protocol Subscription : Cancellable, CustomCombineIdentifierConvertible {}
 
 public enum Subscribers {
-    @frozen public struct Demand {
+    @frozen public struct Demand : Equatable {
         static let unlimited = Demand()
-//        static func max(_ todo: Int) -> Subscribers.Demand {
-//            return unlimited
-//        }
-//        static let none: Subscribers.Demand
+        static func max(_ todo: Int) -> Subscribers.Demand {
+            return unlimited
+        }
+        static let none = Demand()
     }
     
     @frozen public enum Completion<Failure> where Failure : Error {
