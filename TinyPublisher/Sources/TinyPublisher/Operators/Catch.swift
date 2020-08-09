@@ -6,18 +6,18 @@ extension Publisher {
 }
 
 extension Publishers {
-    public class Catch<Upstream, P> : Publisher where Upstream : Publisher, P : Publisher {
+    public class Catch<Upstream, P> : Publisher where Upstream : Publisher {
 
         public typealias Failure = Upstream.Failure
-        public typealias Output = P
+        public typealias Output = Upstream.Output
 
         public let upstream: Upstream
 
-        public let handler: (Upstream.Output) -> Output
+        public let handler: (Upstream.Failure) -> P
         
         private var cancellables: [TinyPublisher.AnyCancellable] = []
 
-        public init(upstream: Upstream, handler: @escaping (Upstream.Failure) -> Output) {
+        public init(upstream: Upstream, handler: @escaping (Upstream.Failure) -> P) {
             self.upstream = upstream
             self.handler = handler
         }
@@ -25,21 +25,35 @@ extension Publishers {
         public func subscribe<S>(_ subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
 
             let sub = ClosureSubscriber<Upstream.Output, Failure>(receiveCompletion: receiveCompletion(subscriber),
-                                                                   receiveValue: receiveValue(subscriber))
+                                                                  receiveValue: subscriber.receive)
             upstream.subscribe(sub)
             cancellables.append(sub.eraseToAnyCancellable())
         }
         
         private func receiveCompletion<S>(_ subscriber: S) -> ((Subscribers.Completion<Failure>) -> Void)? where S : Subscriber, Failure == S.Failure, Output == S.Input {
-            return { completion in
-                subscriber.receive(completion: completion)
+            return { [weak self] completion in
+                switch completion {
+                case .finished:
+                    subscriber.receive(completion: completion)
+                case .failure(let failure):
+                    self?.resubscribeAll(failure)
+                }
             }
         }
         
-        private func receiveValue<S>(_ subscriber: S) -> ((Upstream.Output) -> Void) where S : Subscriber, Failure == S.Failure, Output == S.Input {
-            return { input in
-                subscriber.receive(self.transform(input))
-            }
+        private func resubscribeAll(_ failure: Upstream.Failure) {
+            let newUpstream = handler(failure)
+            // foreach s in upstream.subscribers
+                // let demand = s.reveice()
+                // if demand
+                    // newUpstream.subscribe(s)
+            //self.upstream = newUpstream
         }
+        
+//        private func receiveValue<S>(_ subscriber: S) -> ((Upstream.Output) -> Void) where S : Subscriber, Failure == S.Failure, Output == S.Input {
+//            return { input in
+//                subscriber.receive(self.transform(input))
+//            }
+//        }
     }
 }
