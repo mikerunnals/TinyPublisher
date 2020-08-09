@@ -51,11 +51,6 @@ extension Publishers {
                     newUpstream.subscribe(subscriber)
                 }
             }
-            // foreach s in upstream.subscribers
-                // let demand = s.reveice()
-                // if demand
-                    // newUpstream.subscribe(s)
-            //self.upstream = newUpstream
         }
         
         private func receiveValue<S>(_ subscriber: S) -> ((Upstream.Output) -> Void) where S : Subscriber, Failure == S.Failure, Output == S.Input {
