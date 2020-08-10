@@ -6,16 +6,23 @@ extension Publisher {
 }
 
 extension Publishers {
-    struct TryLastWhere<Upstream> : Publisher where Upstream : Publisher {
+    class TryLastWhere<Upstream> : Publisher where Upstream : Publisher {
         
-        public typealias Failure = Upstream.Failure
+        public typealias Failure = Error
         public typealias Output = Upstream.Output
         
-        let upstream: Upstream
-        var lastValue: Output
-        let predicate: (Output) throws -> Bool
+        typealias Predicate = (Output) throws -> Bool
         
-        public mutating func subscribe<S>(_ subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
+        let upstream: Upstream
+        var lastValue: Output?
+        let predicate: Predicate
+        
+        init(upstream: Upstream, predicate: @escaping Predicate) {
+            self.upstream = upstream
+            self.predicate = predicate
+        }
+        
+        public func subscribe<S>(_ subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
 
             let anySubscriber = subscriber.eraseToAnySubscriber()
             let upstreamSubscriber = ClosureSubscriber<Upstream.Output, Upstream.Failure>(
@@ -28,14 +35,26 @@ extension Publishers {
             return { upstreamCompletion in
                 switch upstreamCompletion {
                 case .finished:
-                    subscriber.receive(completion: .finished)
+                    self.applyPredicate(subscriber)
                 case .failure(let failure):
                     subscriber.receive(completion: .failure(failure))
                 }
             }
         }
         
-        private mutating func receiveValue() -> ((Upstream.Output) -> Void) {
+        private func applyPredicate(_ subscriber: AnySubscriber<Output, Failure>) {
+            subscriber.receive(completion: .finished)
+            do {
+                guard let value = lastValue, try predicate(value) else {
+                    //subscriber.receive(completion: .failure(error))
+                    return
+                }
+            } catch {
+                subscriber.receive(completion: .failure(error))
+            }
+        }
+        
+        private func receiveValue() -> ((Upstream.Output) -> Void) {
             return { self.lastValue = $0 }
         }
     }

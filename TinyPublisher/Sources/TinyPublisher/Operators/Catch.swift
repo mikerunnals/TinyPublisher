@@ -7,7 +7,7 @@ extension Publisher {
 
 extension Publishers {
     public class Catch<Upstream, P> : Publisher where Upstream : Publisher,
-    P : Publisher, P.Failure == Upstream.Failure, P.Output == Upstream.Output {
+    P : Publisher, P.Output == Upstream.Output, Upstream.Failure == Error {
 
         public typealias Failure = Upstream.Failure
         public typealias Output = Upstream.Output
@@ -17,7 +17,6 @@ extension Publishers {
         public let handler: (Upstream.Failure) -> P
         
         private var subscribers: [AnySubscriber<Output, Failure>] = []
-        //private var cancellables: [TinyPublisher.AnyCancellable] = []
 
         public init(upstream: Upstream, handler: @escaping (Upstream.Failure) -> P) {
             self.upstream = upstream
@@ -30,7 +29,6 @@ extension Publishers {
                                                                   receiveValue: receiveValue(subscriber))
             upstream.subscribe(sub)
             subscribers.append(sub.eraseToAnySubscriber())
-            //cancellables.append(sub.eraseToAnyCancellable())
         }
         
         private func receiveCompletion<S>(_ subscriber: S) -> ((Subscribers.Completion<Failure>) -> Void)? where S : Subscriber, Failure == S.Failure, Output == S.Input {
