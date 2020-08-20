@@ -18,7 +18,7 @@ extension Publishers {
 
         public let handler: (Upstream.Failure) -> NewPublisher
         
-        private var subscribers: [AnySubscriber<Output, Upstream.Failure>] = []
+        private var subscribers: [AnySubscriber<Upstream.Output, Upstream.Failure>] = []
 
         public init(upstream: Upstream, handler: @escaping (Upstream.Failure) -> NewPublisher) {
             self.upstream = upstream
@@ -45,7 +45,7 @@ extension Publishers {
             }
         }
         
-        private func receiveNewCompletion<S>(_ subscriber: S) -> ((Subscribers.Completion<Failure>) -> Void)? where S : Subscriber, Failure == S.Failure, Output == S.Input {
+        private func receiveNewCompletion(_ subscriber: AnySubscriber<Upstream.Output, Upstream.Failure>) -> ((Subscribers.Completion<NewPublisher.Failure>) -> Void)? {
             return { completion in
                 switch completion {
                 case .finished:
@@ -60,10 +60,10 @@ extension Publishers {
             let newUpstream = handler(failure)
             subscribers.forEach { subscriber in
                 if subscriber.receive() == .unlimited /*|| demand not met*/  {
-                    let sub = ClosureSubscriber<Upstream.Output, Upstream.Failure>(
+                    let sub = ClosureSubscriber<Upstream.Output, NewPublisher.Failure>(
                         receiveCompletion: receiveNewCompletion(subscriber),
-                        receiveValue: receiveValue(subscriber))
-                    newUpstream.subscribe(subscriber)
+                        receiveValue: receiveNewValue(subscriber))
+                    newUpstream.subscribe(sub)
                 }
             }
         }
@@ -73,5 +73,12 @@ extension Publishers {
                 subscriber.receive(input)
             }
         }
+        
+        private func receiveNewValue<S>(_ subscriber: S) -> ((Upstream.Output) -> Void) where S : Subscriber, Output == S.Input {
+            return { input in
+                subscriber.receive(input)
+            }
+        }
+
     }
 }
