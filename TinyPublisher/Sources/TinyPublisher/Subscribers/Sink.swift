@@ -22,13 +22,15 @@ class ClosureSubscriber<Input, Failure> : Subscriber {
         
     private var receiveCompletion: ((Subscribers.Completion<Failure>) -> Void)?
     private var receiveValue: ((Input) -> Void)
-    
+    private var receiveSubscription: ((Subscription) -> Void)?
+
     fileprivate var subscription: Subscription?
     
     init(receiveCompletion: ((Subscribers.Completion<Failure>) -> Void)? = nil,
-         receiveValue: @escaping ((Input) -> Void)) {
+         receiveValue: @escaping ((Input) -> Void), receiveSubscription: ((Subscription) -> Void)? = nil) {
         self.receiveCompletion = receiveCompletion
         self.receiveValue = receiveValue
+        self.receiveSubscription = receiveSubscription
     }
     
     func receive(_ input: Input) -> Subscribers.Demand {
@@ -42,6 +44,7 @@ class ClosureSubscriber<Input, Failure> : Subscriber {
     
     func receive(subscription: Subscription) {
         self.subscription = subscription
+        receiveSubscription?(subscription)
     }
     
     func receive(completion: Subscribers.Completion<Failure>) {

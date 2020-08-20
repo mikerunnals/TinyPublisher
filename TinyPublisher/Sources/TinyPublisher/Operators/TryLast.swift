@@ -16,6 +16,7 @@ extension Publishers {
         let upstream: Upstream
         var lastValue: Output?
         let predicate: Predicate
+        var subscriptions: [CombineIdentifier: Subscription] = [:]
         
         init(upstream: Upstream, predicate: @escaping Predicate) {
             self.upstream = upstream
@@ -27,7 +28,8 @@ extension Publishers {
             let anySubscriber = subscriber.eraseToAnySubscriber()
             let upstreamSubscriber = ClosureSubscriber<Upstream.Output, Upstream.Failure>(
                 receiveCompletion: receiveCompletion(anySubscriber),
-                receiveValue: receiveValue())
+                receiveValue: receiveValue(anySubscriber),
+                receiveSubscription: receiveSubscription(anySubscriber))
             upstream.subscribe(upstreamSubscriber)
         }
         
@@ -35,7 +37,7 @@ extension Publishers {
             return { upstreamCompletion in
                 switch upstreamCompletion {
                 case .finished:
-                    self.applyPredicate(subscriber)
+                    subscriber.receive(completion: .finished)
                 case .failure(let failure):
                     subscriber.receive(completion: .failure(failure))
                 }
@@ -45,18 +47,27 @@ extension Publishers {
         private func applyPredicate(_ subscriber: AnySubscriber<Output, Failure>) {
             do {
                 guard let value = lastValue, try predicate(value) else {
-                    //subscriber.receive(completion: .failure())
                     return
                 }
-                subscriber.receive(value)
             } catch {
+                subscriptions[subscriber.combineIdentifier]?.cancel()
                 subscriber.receive(completion: .failure(error))
             }
-            subscriber.receive(completion: .finished)
         }
         
-        private func receiveValue() -> ((Upstream.Output) -> Void) {
-            return { self.lastValue = $0 }
+        private func receiveValue(_ subscriber: AnySubscriber<Output, Failure>) -> ((Upstream.Output) -> Void) {
+            return {
+                self.lastValue = $0
+                self.applyPredicate(subscriber)
+            }
         }
+        
+        private func receiveSubscription(_ subscriber: AnySubscriber<Output, Failure>) -> ((Subscription) -> Void) {
+            return { subscription in
+                self.subscriptions[subscriber.combineIdentifier] = subscription
+                subscriber.receive(subscription: subscription)
+            }
+        }
+
     }
 }
