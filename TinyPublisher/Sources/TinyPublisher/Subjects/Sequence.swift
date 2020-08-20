@@ -28,6 +28,8 @@ extension Publishers {
             elements.forEach {
                 subject.send($0)
             }
+            
+            subscriber.receive(completion: .finished)
         }
     }
 }

@@ -43,15 +43,16 @@ extension Publishers {
         }
         
         private func applyPredicate(_ subscriber: AnySubscriber<Output, Failure>) {
-            subscriber.receive(completion: .finished)
             do {
                 guard let value = lastValue, try predicate(value) else {
-                    //subscriber.receive(completion: .failure(error))
+                    //subscriber.receive(completion: .failure())
                     return
                 }
+                subscriber.receive(value)
             } catch {
                 subscriber.receive(completion: .failure(error))
             }
+            subscriber.receive(completion: .finished)
         }
         
         private func receiveValue() -> ((Upstream.Output) -> Void) {
