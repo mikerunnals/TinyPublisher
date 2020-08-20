@@ -26,7 +26,7 @@ extension Subscriber {
     }
 }
 
-public class AnySubscriber<Input, Failure>: Subscriber where Failure : Error {
+public class AnySubscriber<Input, Failure>: Subscriber {
     
     public typealias Input = Input
     public typealias Failure = Failure

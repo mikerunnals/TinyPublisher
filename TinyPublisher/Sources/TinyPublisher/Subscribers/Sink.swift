@@ -12,11 +12,12 @@ extension Publisher {
     }
 }
 
-class ClosureSubscriber<Input, Failure> : Subscriber where Failure : Error {
-    
+class ClosureSubscriber<Input, Failure> : Subscriber {
+
     let combineIdentifier = CombineIdentifier()
 
     typealias Input = Input
+    
     typealias Failure = Failure
         
     private var receiveCompletion: ((Subscribers.Completion<Failure>) -> Void)?

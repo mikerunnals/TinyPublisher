@@ -23,14 +23,14 @@ public enum Subscribers {
         static let none = Demand()
     }
     
-    @frozen public enum Completion<Failure> where Failure : Error {
+    @frozen public enum Completion<Failure> {
         case finished
         case failure(Failure)
     }
     
 }
 
-public protocol Subscriber : CustomCombineIdentifierConvertible where Failure: Error {
+public protocol Subscriber : CustomCombineIdentifierConvertible {
     associatedtype Input
     associatedtype Failure
     
