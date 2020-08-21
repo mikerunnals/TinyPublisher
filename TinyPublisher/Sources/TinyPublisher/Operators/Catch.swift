@@ -14,23 +14,29 @@ extension Publishers {
         
         public typealias Output = Upstream.Output
 
-        public let upstream: Upstream
-
-        public let handler: (Upstream.Failure) -> NewPublisher
+        private let oldUpstream: Upstream
+        
+        private var newUpstream: NewPublisher?
+    
+        private let handler: (Upstream.Failure) -> NewPublisher
         
         private var subscribers: [AnySubscriber<Upstream.Output, Upstream.Failure>] = []
 
         public init(upstream: Upstream, handler: @escaping (Upstream.Failure) -> NewPublisher) {
-            self.upstream = upstream
+            self.oldUpstream = upstream
             self.handler = handler
         }
 
         public func receive<S>(subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
 
-            let sub = ClosureSubscriber<Upstream.Output, Upstream.Failure>(
-                receiveCompletion: receiveCompletion(subscriber),
-                receiveValue: receiveValue(subscriber))
-            upstream.receive(subscriber: sub)
+            if let newUpstream = newUpstream {
+                subscribeNewUpstream(subscriber)
+            } else {
+                let sub = ClosureSubscriber<Upstream.Output, Upstream.Failure>(
+                    receiveCompletion: receiveCompletion(subscriber),
+                    receiveValue: receiveValue(subscriber))
+                oldUpstream.receive(subscriber: sub)
+            }
             subscribers.append(sub.eraseToAnySubscriber())
         }
         
@@ -57,15 +63,19 @@ extension Publishers {
         }
         
         private func resubscribeAll(_ failure: Upstream.Failure) {
-            let newUpstream = handler(failure)
+            newUpstream = handler(failure)
             subscribers.forEach { subscriber in
                 if subscriber.receive() == .unlimited /*|| demand not met*/  {
-                    let sub = ClosureSubscriber<Upstream.Output, NewPublisher.Failure>(
-                        receiveCompletion: receiveNewCompletion(subscriber),
-                        receiveValue: receiveNewValue(subscriber))
-                    newUpstream.receive(subscriber: sub)
+                    subscribeNewUpstream(subscriber)
                 }
             }
+        }
+        
+        private func subscribeNewUpstream<S>(_ subscriber: S) where S : Subscriber, Output == S.Input {
+            let sub = ClosureSubscriber<Upstream.Output, NewPublisher.Failure>(
+                receiveCompletion: receiveNewCompletion(subscriber),
+                receiveValue: receiveNewValue(subscriber))
+            newUpstream!.receive(subscriber: sub)
         }
         
         private func receiveValue<S>(_ subscriber: S) -> ((Upstream.Output) -> Void) where S : Subscriber, Failure == S.Failure, Output == S.Input {
