@@ -5,6 +5,7 @@ public class PassthroughSubject<Output, Failure> : Subject where Failure : Error
     
     public typealias Failure = Failure
     
+    // MLR TODO: Handle concurrency of cancellableSubscribers??
     private var cancellableSubscribers: [CombineIdentifier : AnySubscriber<Output, Failure>] = [:]
 
     public init() {}
@@ -27,7 +28,9 @@ public class PassthroughSubject<Output, Failure> : Subject where Failure : Error
     }
     
     public func send(completion: Subscribers.Completion<Failure>) {
-        cancellableSubscribers.forEach { $0.value.receive(completion: completion) }
+        let _cancellableSubscribers = cancellableSubscribers
+        cancellableSubscribers = [:]
+        _cancellableSubscribers.forEach { $0.value.receive(completion: completion) }
     }
     
     public func send(subscription: Subscription) {
