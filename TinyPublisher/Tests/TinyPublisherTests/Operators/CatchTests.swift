@@ -18,7 +18,9 @@ final class CatchTests: XCTestCase {
             .catch({ (error) in
                 Just(-1)
             })
-            .sink { result = $0 }
+            .sink {
+                result = $0
+            }
 
         XCTAssertEqual(-1, result)
     }

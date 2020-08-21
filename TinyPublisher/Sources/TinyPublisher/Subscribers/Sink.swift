@@ -6,7 +6,7 @@ extension Publisher {
    
         let subscriber = ClosureSubscriber<Self.Output, Self.Failure>(receiveCompletion: receiveCompletion,
                                                                       receiveValue: receiveValue)
-        subscribe(subscriber)
+        receive(subscriber: subscriber)
 
         return subscriber.eraseToAnyCancellable()
     }

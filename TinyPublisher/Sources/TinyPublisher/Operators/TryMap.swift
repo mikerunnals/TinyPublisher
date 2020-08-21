@@ -23,13 +23,13 @@ extension Publishers {
             self.transform = transform
         }
 
-        public func subscribe<S>(_ subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
+        public func receive<S>(subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
 
             let anySubscriber = subscriber.eraseToAnySubscriber()
             let upstreamSubscriber = ClosureSubscriber<Upstream.Output, Upstream.Failure>(
                 receiveCompletion: receiveCompletion(anySubscriber),
                 receiveValue: receiveValue(anySubscriber))
-            upstream.subscribe(upstreamSubscriber)
+            upstream.receive(subscriber: upstreamSubscriber)
             cancellables.append(upstreamSubscriber.eraseToAnyCancellable())
         }
         

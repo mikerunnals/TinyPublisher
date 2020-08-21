@@ -43,12 +43,32 @@ public protocol Subscriber : CustomCombineIdentifierConvertible {
     func receive(completion: Subscribers.Completion<Failure>)
 }
 
+//public protocol Publisher {
+//    associatedtype Output
+//    associatedtype Failure: Error
+//
+//    func subscribe<S: Subscriber>(_ subscriber:S) where S.Input == Output, S.Failure == Failure
+//}
+
 public protocol Publisher {
+
+    /// The kind of values published by this publisher.
     associatedtype Output
-    associatedtype Failure: Error
-    
-    func subscribe<S: Subscriber>(_ subscriber:S) where S.Input == Output, S.Failure == Failure
+
+    /// The kind of errors this publisher might publish.
+    ///
+    /// Use `Never` if this `Publisher` does not publish errors.
+    associatedtype Failure : Error
+
+    /// This function is called to attach the specified `Subscriber` to this `Publisher` by `subscribe(_:)`
+    ///
+    /// - SeeAlso: `subscribe(_:)`
+    /// - Parameters:
+    ///     - subscriber: The subscriber to attach to this `Publisher`.
+    ///                   once attached it can begin to receive values.
+    func receive<S>(subscriber: S) where S : Subscriber, Self.Failure == S.Failure, Self.Output == S.Input
 }
+
 
 enum Publishers {
     // see list here https://developer.apple.com/documentation/combine/publishers

@@ -1,6 +1,6 @@
 
 public class PassthroughSubject<Output, Failure> : Subject where Failure : Error {
-        
+
     public typealias Output = Output
     
     public typealias Failure = Failure
@@ -10,7 +10,7 @@ public class PassthroughSubject<Output, Failure> : Subject where Failure : Error
 
     public init() {}
     
-    public func subscribe<S>(_ subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
+    public func receive<S>(subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
         let subscription = TinySubscription(subscriber.combineIdentifier,
                                           cancelCall: { [weak self] in
             self?.removeSubscriber(subscriber.combineIdentifier)

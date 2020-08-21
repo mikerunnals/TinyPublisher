@@ -7,15 +7,16 @@ extension Publisher {
 @frozen public struct AnyPublisher<Output, Failure>: Publisher where Failure : Error {
     
     public typealias Output = Output
+    
     public typealias Failure = Failure
     
     let subscribeClosure: (AnySubscriber<Output, Failure>) -> Void
                 
     init<P: Publisher>(_ publisher: P) where Self.Failure == P.Failure, Self.Output == P.Output {
-        subscribeClosure = { publisher.subscribe($0) }
+        subscribeClosure = { publisher.receive(subscriber: $0) }
     }
         
-    public func subscribe<S>(_ subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
+    public func receive<S>(subscriber: S) where S : Subscriber, Self.Failure == S.Failure, Self.Output == S.Input {
         subscribeClosure(subscriber.eraseToAnySubscriber())
     }
 }

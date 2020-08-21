@@ -9,6 +9,7 @@ extension Publishers {
     class TryLastWhere<Upstream> : Publisher where Upstream : Publisher {
         
         public typealias Failure = Error
+        
         public typealias Output = Upstream.Output
         
         typealias Predicate = (Output) throws -> Bool
@@ -23,14 +24,14 @@ extension Publishers {
             self.predicate = predicate
         }
         
-        public func subscribe<S>(_ subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
+        public func receive<S>(subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
 
             let anySubscriber = subscriber.eraseToAnySubscriber()
             let upstreamSubscriber = ClosureSubscriber<Upstream.Output, Upstream.Failure>(
                 receiveCompletion: receiveCompletion(anySubscriber),
                 receiveValue: receiveValue(anySubscriber),
                 receiveSubscription: receiveSubscription(anySubscriber))
-            upstream.subscribe(upstreamSubscriber)
+            upstream.receive(subscriber: upstreamSubscriber)
         }
         
         private func receiveCompletion(_ subscriber: AnySubscriber<Output, Failure>) -> ((Subscribers.Completion<Upstream.Failure>) -> Void)? {

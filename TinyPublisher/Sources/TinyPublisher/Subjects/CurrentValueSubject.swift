@@ -13,8 +13,8 @@ public class CurrentValueSubject<Output, Failure> : PassthroughSubject<Output, F
         super.send(value)
     }
     
-    override public func subscribe<S>(_ subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
-        super.subscribe(subscriber)
+    override public func receive<S>(subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
+        super.receive(subscriber: subscriber)
         subscriber.receive(value) // Send current value to new subscriber
     }
 }

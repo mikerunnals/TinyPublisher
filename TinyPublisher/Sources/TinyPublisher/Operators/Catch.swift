@@ -25,12 +25,12 @@ extension Publishers {
             self.handler = handler
         }
 
-        public func subscribe<S>(_ subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
+        public func receive<S>(subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
 
             let sub = ClosureSubscriber<Upstream.Output, Upstream.Failure>(
                 receiveCompletion: receiveCompletion(subscriber),
                 receiveValue: receiveValue(subscriber))
-            upstream.subscribe(sub)
+            upstream.receive(subscriber: sub)
             subscribers.append(sub.eraseToAnySubscriber())
         }
         
@@ -63,7 +63,7 @@ extension Publishers {
                     let sub = ClosureSubscriber<Upstream.Output, NewPublisher.Failure>(
                         receiveCompletion: receiveNewCompletion(subscriber),
                         receiveValue: receiveNewValue(subscriber))
-                    newUpstream.subscribe(sub)
+                    newUpstream.receive(subscriber: sub)
                 }
             }
         }
