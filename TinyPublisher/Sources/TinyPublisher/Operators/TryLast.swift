@@ -34,9 +34,12 @@ extension Publishers {
         }
         
         private func receiveCompletion(_ subscriber: AnySubscriber<Output, Failure>) -> ((Subscribers.Completion<Upstream.Failure>) -> Void)? {
-            return { upstreamCompletion in
+            return { [unowned self] upstreamCompletion in
                 switch upstreamCompletion {
                 case .finished:
+                    if let lastValue = self.lastValue {
+                        subscriber.receive(lastValue)
+                    }
                     subscriber.receive(completion: .finished)
                 case .failure(let failure):
                     subscriber.receive(completion: .failure(failure))

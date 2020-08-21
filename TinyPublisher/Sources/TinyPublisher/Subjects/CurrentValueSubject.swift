@@ -15,6 +15,6 @@ public class CurrentValueSubject<Output, Failure> : PassthroughSubject<Output, F
     
     override public func subscribe<S>(_ subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
         super.subscribe(subscriber)
-        _ = subscriber.receive(value) // Send current value to new subscriber
+        subscriber.receive(value) // Send current value to new subscriber
     }
 }

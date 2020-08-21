@@ -29,8 +29,7 @@ extension Publishers {
                 subject.send($0)
             }
             
-            // MLR TODO: don't call subscriber.receive if subscription is cancelled.
-            subscriber.receive(completion: .finished)
+            subject.send(completion: .finished)
         }
     }
 }
