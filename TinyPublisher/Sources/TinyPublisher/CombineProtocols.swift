@@ -31,7 +31,9 @@ public enum Subscribers {
 }
 
 public protocol Subscriber : CustomCombineIdentifierConvertible {
+    
     associatedtype Input
+    
     associatedtype Failure
     
     func receive(_ input: Self.Input) -> Subscribers.Demand

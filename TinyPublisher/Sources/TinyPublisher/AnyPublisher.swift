@@ -39,7 +39,7 @@ public class AnySubscriber<Input, Failure>: Subscriber {
     private let receiveSubscriptionClosure: (Subscription) -> ()
     private let receiveCompletionClosure: (Subscribers.Completion<Failure>) -> ()
 
-    init<S: Subscriber>(_ subscriber: S) where Failure == S.Failure, Input == S.Input{
+    init<S: Subscriber>(_ subscriber: S) where Failure == S.Failure, Input == S.Input {
         receiveSubscriptionClosure = subscriber.receive(subscription:)
         receiveInputClosure = subscriber.receive(_:)
         receiveClosure = subscriber.receive
