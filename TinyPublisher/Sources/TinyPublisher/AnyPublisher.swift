@@ -7,15 +7,16 @@ extension Publisher {
 @frozen public struct AnyPublisher<Output, Failure>: Publisher where Failure : Error {
     
     public typealias Output = Output
+    
     public typealias Failure = Failure
     
     let subscribeClosure: (AnySubscriber<Output, Failure>) -> Void
                 
     init<P: Publisher>(_ publisher: P) where Self.Failure == P.Failure, Self.Output == P.Output {
-        subscribeClosure = { publisher.subscribe($0) }
+        subscribeClosure = { publisher.receive(subscriber: $0) }
     }
         
-    public func subscribe<S>(_ subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
+    public func receive<S>(subscriber: S) where S : Subscriber, Self.Failure == S.Failure, Self.Output == S.Input {
         subscribeClosure(subscriber.eraseToAnySubscriber())
     }
 }
@@ -26,7 +27,7 @@ extension Subscriber {
     }
 }
 
-public class AnySubscriber<Input, Failure>: Subscriber where Failure : Error {
+public class AnySubscriber<Input, Failure>: Subscriber {
     
     public typealias Input = Input
     public typealias Failure = Failure
@@ -38,7 +39,7 @@ public class AnySubscriber<Input, Failure>: Subscriber where Failure : Error {
     private let receiveSubscriptionClosure: (Subscription) -> ()
     private let receiveCompletionClosure: (Subscribers.Completion<Failure>) -> ()
 
-    init<S: Subscriber>(_ subscriber: S) where Failure == S.Failure, Input == S.Input{
+    init<S: Subscriber>(_ subscriber: S) where Failure == S.Failure, Input == S.Input {
         receiveSubscriptionClosure = subscriber.receive(subscription:)
         receiveInputClosure = subscriber.receive(_:)
         receiveClosure = subscriber.receive

@@ -1,18 +1,22 @@
 
 public class PassthroughSubject<Output, Failure> : Subject where Failure : Error {
-    
+
     public typealias Output = Output
+    
     public typealias Failure = Failure
     
-    private var cancellableSubscribers: [CombineIdentifier : (Output) -> Void] = [:]
+    // MLR TODO: Handle concurrency of cancellableSubscribers??
+    private var cancellableSubscribers: [CombineIdentifier : AnySubscriber<Output, Failure>] = [:]
 
     public init() {}
     
-    public func subscribe<S>(_ subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
-        subscriber.receive(subscription: MySubscription(subscriber.combineIdentifier) { [weak self] in
+    public func receive<S>(subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
+        let subscription = TinySubscription(subscriber.combineIdentifier,
+                                          cancelCall: { [weak self] in
             self?.removeSubscriber(subscriber.combineIdentifier)
         })
-        cancellableSubscribers[subscriber.combineIdentifier] = { _ = subscriber.receive($0) }
+        subscriber.receive(subscription: subscription)
+        cancellableSubscribers[subscriber.combineIdentifier] = subscriber.eraseToAnySubscriber()
     }
     
     private func removeSubscriber(_ identifier: CombineIdentifier) {
@@ -20,16 +24,27 @@ public class PassthroughSubject<Output, Failure> : Subject where Failure : Error
     }
 
     public func send(_ value: Output) {
-        cancellableSubscribers.forEach { $0.1(value) }
+        cancellableSubscribers.forEach { $0.value.receive(value) }
+    }
+    
+    public func send(completion: Subscribers.Completion<Failure>) {
+        let _cancellableSubscribers = cancellableSubscribers
+        cancellableSubscribers = [:]
+        _cancellableSubscribers.forEach { $0.value.receive(completion: completion) }
+    }
+    
+    public func send(subscription: Subscription) {
+        // MLR TODO: ???
     }
 }
 
-fileprivate class MySubscription : Subscription {
-    
+fileprivate class TinySubscription : Subscription {
+        
     let combineIdentifier: CombineIdentifier
-    let cancelCall: () -> Void
     
-    init(_ combineIdentifier: CombineIdentifier, _ cancelCall: @escaping () -> Void) {
+    let cancelCall: () -> Void
+
+    init(_ combineIdentifier: CombineIdentifier, cancelCall: @escaping () -> Void) {
         self.combineIdentifier = combineIdentifier
         self.cancelCall = cancelCall
     }

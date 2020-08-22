@@ -4,7 +4,7 @@ extension Publisher {
     func assign<Root>(to keyPath: ReferenceWritableKeyPath<Root, Output>, on object: Root) -> AnyCancellable where Self.Failure == Never {
         let subscriber = AssignToSubscriber<Self.Output, Self.Failure, Root>(keyPath: keyPath, rootObject: object)
         
-        subscribe(subscriber)
+        receive(subscriber: subscriber)
     
         return subscriber.eraseToAnyCancellable()
     }

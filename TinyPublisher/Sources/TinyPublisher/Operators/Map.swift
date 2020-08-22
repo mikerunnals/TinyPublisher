@@ -9,24 +9,25 @@ extension Publishers {
     public class Map<Upstream, Output> : Publisher where Upstream : Publisher {
 
         public typealias Failure = Upstream.Failure
+        
         public typealias Output = Output
 
         public let upstream: Upstream
 
         public let transform: (Upstream.Output) -> Output
         
-        private var cancellables: [TinyPublisher.AnyCancellable] = []
+        private var cancellables: [AnyCancellable] = []
 
         public init(upstream: Upstream, transform: @escaping (Upstream.Output) -> Output) {
             self.upstream = upstream
             self.transform = transform
         }
 
-        public func subscribe<S>(_ subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
+        public func receive<S>(subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
 
             let sub = ClosureSubscriber<Upstream.Output, Failure>(receiveCompletion: receiveCompletion(subscriber),
                                                                    receiveValue: receiveValue(subscriber))
-            upstream.subscribe(sub)
+            upstream.receive(subscriber: sub)
             cancellables.append(sub.eraseToAnyCancellable())
         }
         

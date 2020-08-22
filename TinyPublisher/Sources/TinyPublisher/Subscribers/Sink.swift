@@ -6,28 +6,31 @@ extension Publisher {
    
         let subscriber = ClosureSubscriber<Self.Output, Self.Failure>(receiveCompletion: receiveCompletion,
                                                                       receiveValue: receiveValue)
-        subscribe(subscriber)
+        receive(subscriber: subscriber)
 
         return subscriber.eraseToAnyCancellable()
     }
 }
 
-class ClosureSubscriber<Input, Failure> : Subscriber where Failure : Error {
-    
+class ClosureSubscriber<Input, Failure> : Subscriber {
+
     let combineIdentifier = CombineIdentifier()
 
     typealias Input = Input
+    
     typealias Failure = Failure
         
     private var receiveCompletion: ((Subscribers.Completion<Failure>) -> Void)?
     private var receiveValue: ((Input) -> Void)
-    
+    private var receiveSubscription: ((Subscription) -> Void)?
+
     fileprivate var subscription: Subscription?
     
     init(receiveCompletion: ((Subscribers.Completion<Failure>) -> Void)? = nil,
-         receiveValue: @escaping ((Input) -> Void)) {
+         receiveValue: @escaping ((Input) -> Void), receiveSubscription: ((Subscription) -> Void)? = nil) {
         self.receiveCompletion = receiveCompletion
         self.receiveValue = receiveValue
+        self.receiveSubscription = receiveSubscription
     }
     
     func receive(_ input: Input) -> Subscribers.Demand {
@@ -41,6 +44,7 @@ class ClosureSubscriber<Input, Failure> : Subscriber where Failure : Error {
     
     func receive(subscription: Subscription) {
         self.subscription = subscription
+        receiveSubscription?(subscription)
     }
     
     func receive(completion: Subscribers.Completion<Failure>) {

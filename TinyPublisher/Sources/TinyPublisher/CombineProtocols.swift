@@ -15,23 +15,25 @@ public protocol CustomCombineIdentifierConvertible {
 public protocol Subscription : Cancellable, CustomCombineIdentifierConvertible {}
 
 public enum Subscribers {
-    @frozen public struct Demand {
+    @frozen public struct Demand : Equatable {
         static let unlimited = Demand()
-//        static func max(_ todo: Int) -> Subscribers.Demand {
-//            return unlimited
-//        }
-//        static let none: Subscribers.Demand
+        static func max(_ todo: Int) -> Subscribers.Demand {
+            return unlimited
+        }
+        static let none = Demand()
     }
     
-    @frozen public enum Completion<Failure> where Failure : Error {
+    @frozen public enum Completion<Failure> {
         case finished
         case failure(Failure)
     }
     
 }
 
-public protocol Subscriber : CustomCombineIdentifierConvertible where Failure: Error {
+public protocol Subscriber : CustomCombineIdentifierConvertible {
+    
     associatedtype Input
+    
     associatedtype Failure
     
     func receive(_ input: Self.Input) -> Subscribers.Demand
@@ -43,17 +45,53 @@ public protocol Subscriber : CustomCombineIdentifierConvertible where Failure: E
     func receive(completion: Subscribers.Completion<Failure>)
 }
 
+//public protocol Publisher {
+//    associatedtype Output
+//    associatedtype Failure: Error
+//
+//    func subscribe<S: Subscriber>(_ subscriber:S) where S.Input == Output, S.Failure == Failure
+//}
+
 public protocol Publisher {
+
+    /// The kind of values published by this publisher.
     associatedtype Output
-    associatedtype Failure: Error
-    
-    func subscribe<S: Subscriber>(_ subscriber:S) where S.Input == Output, S.Failure == Failure
+
+    /// The kind of errors this publisher might publish.
+    ///
+    /// Use `Never` if this `Publisher` does not publish errors.
+    associatedtype Failure : Error
+
+    /// This function is called to attach the specified `Subscriber` to this `Publisher` by `subscribe(_:)`
+    ///
+    /// - SeeAlso: `subscribe(_:)`
+    /// - Parameters:
+    ///     - subscriber: The subscriber to attach to this `Publisher`.
+    ///                   once attached it can begin to receive values.
+    func receive<S>(subscriber: S) where S : Subscriber, Self.Failure == S.Failure, Self.Output == S.Input
 }
+
 
 enum Publishers {
     // see list here https://developer.apple.com/documentation/combine/publishers
 }
 
-public protocol Subject: Publisher, AnyObject {
-    func send(_ value: Output)
+//public protocol Subject: Publisher, AnyObject {
+//    func send(_ value: Output)
+//}
+
+public protocol Subject : AnyObject, Publisher {
+
+    /// Sends a value to the subscriber.
+    ///
+    /// - Parameter value: The value to send.
+    func send(_ value: Self.Output)
+
+    /// Sends a completion signal to the subscriber.
+    ///
+    /// - Parameter completion: A `Completion` instance which indicates whether publishing has finished normally or failed with an error.
+    func send(completion: Subscribers.Completion<Self.Failure>)
+
+    /// Provides this Subject an opportunity to establish demand for any new upstream subscriptions (say via, ```Publisher.subscribe<S: Subject>(_: Subject)`
+    func send(subscription: Subscription)
 }

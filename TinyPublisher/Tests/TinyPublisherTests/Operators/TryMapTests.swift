@@ -23,7 +23,9 @@ final class TryMapTests: XCTestCase {
         _ = numbers.publisher
             .tryMap { try romanNumeral(from: $0) }
             .sink(
-                receiveCompletion: {  s = s + "completion: \($0)" },
+                receiveCompletion: {
+                    s = s + "completion: \($0)"
+            },
                 receiveValue: { s = s + "\($0)" + " "  }
              )
 
