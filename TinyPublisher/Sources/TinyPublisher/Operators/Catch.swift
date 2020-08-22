@@ -58,23 +58,12 @@ extension Publishers {
                 case .finished:
                     subscriber.receive(completion: .finished)
                 case .failure(let failure):
-                    self?.resubscribeAll(failure)
+                    self?.handleUpstreamFailure(failure)
                 }
             }
         }
         
-        private func receiveNewCompletion(_ subscriber: AnySubscriber<Upstream.Output, NewPublisher.Failure>) -> ((Subscribers.Completion<NewPublisher.Failure>) -> Void)? {
-            return { completion in
-                switch completion {
-                case .finished:
-                    subscriber.receive(completion: .finished)
-                case .failure(_):
-                    break // Never?
-                }
-            }
-        }
-        
-        private func resubscribeAll(_ failure: Upstream.Failure) {
+        private func handleUpstreamFailure(_ failure: Upstream.Failure) {
             newUpstream = handler(failure)
             
             guard let newUpstream = newUpstream else {
@@ -88,27 +77,11 @@ extension Publishers {
             }
         }
         
-        private func subscribeNewUpstream<S>(_ subscriber: S) -> ClosureSubscriber<Upstream.Output, NewPublisher.Failure>
-            where S : Subscriber, Output == S.Input, S.Failure == NewPublisher.Failure {
-            let sub = ClosureSubscriber<Upstream.Output, NewPublisher.Failure>(
-                receiveCompletion: receiveNewCompletion(subscriber.eraseToAnySubscriber()),
-                receiveValue: receiveNewValue(subscriber))
-            newUpstream!.receive(subscriber: sub)
-            return sub
-        }
-        
         private func receiveValue<S>(_ subscriber: S) -> ((Upstream.Output) -> Void) where S : Subscriber, Failure == S.Failure, Output == S.Input {
             return { input in
                 subscriber.receive(input)
             }
         }
-        
-        private func receiveNewValue<S>(_ subscriber: S) -> ((Upstream.Output) -> Void) where S : Subscriber, Output == S.Input {
-            return { input in
-                subscriber.receive(input)
-            }
-        }
-
     }
 }
 
@@ -146,11 +119,10 @@ public class ConvertedSubscriber<Input, OldFailure, NewFailure>: Subscriber {
             switch completion {
             case .finished:
                 receiveCompletion(.finished)
-            case .failure(_):
+            case .failure(let newFailure):
                 break
-//                if let newError = error as? NewFailure {
-//                    receiveCompletion(Subscribers.Completion<OldFailure>.failure(<#T##OldFailure#>))
-//                }
+                // MLR TODO: convert newFailure to oldFailure?
+                // receiveCompletion(.failure())
             }
         }
     }
