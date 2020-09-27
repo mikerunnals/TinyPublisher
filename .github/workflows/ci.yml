@@ -1,0 +1,34 @@
+name: TinyPublisher CI
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+defaults:
+  run:
+    working-directory: ./TinyPublisher
+jobs:
+  test-tiny:
+    name: Test With Tiny
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Select Xcode 12
+        run: sudo xcode-select -switch /Applications/Xcode_12.app
+      - name: Test With Tiny
+        run: swift test --configuration debug
+        working-directory: ./TinyPublisher
+  test-combine:
+    name: Test With Combine
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Select Xcode 12
+        run: sudo xcode-select -switch /Applications/Xcode_12.app
+      - name: Test With Combine
+        run: swift test --configuration debug -Xswiftc -DRUN_UNIT_TESTS_AGAINST_COMBINE
+        working-directory: ./TinyPublisher
+
+ 
