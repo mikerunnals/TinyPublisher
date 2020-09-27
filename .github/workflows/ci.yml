@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@master
       - name: Select Xcode 12
         run: sudo xcode-select -switch /Applications/Xcode_12.app
-      - name: Test With Tiny
+      - name: Test With Combine
         run: swift test --configuration debug -Xswiftc -DRUN_UNIT_TESTS_AGAINST_COMBINE
         working-directory: ./TinyPublisher
 
