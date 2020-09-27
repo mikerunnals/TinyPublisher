@@ -1,9 +1,14 @@
 import XCTest
+
+#if true
+import Combine // TODO: figure out how to call both Tiny and Combine
+#else
 @testable import TinyPublisher
-//import Combine // TODO: figure out how to call both Tiny and Combine
+#endif
 
 final class CatchTests: XCTestCase {
     
+    @available(iOS 13.0.0, *)
     func testTiny() {
         struct SimpleError: Error {}
         let numbers = [5, 4, 3, 2, 1, 0, 9, 8, 7, 6]
