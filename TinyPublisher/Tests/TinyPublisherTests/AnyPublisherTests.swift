@@ -1,6 +1,10 @@
 import XCTest
+
+#if TEST_COMBINE
+import Combine
+#else
 @testable import TinyPublisher
-//import Combine
+#endif
 
 /// see https://developer.apple.com/documentation/combine/publisher/erasetoanypublisher()
 final class AnyPublisherTests: XCTestCase {

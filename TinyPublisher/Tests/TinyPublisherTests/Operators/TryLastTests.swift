@@ -1,6 +1,10 @@
 import XCTest
+
+#if TEST_COMBINE
+import Combine
+#else
 @testable import TinyPublisher
-//import Combine // TODO: figure out how to call both Tiny and Combine
+#endif
 
 
 struct RangeError: Error {}

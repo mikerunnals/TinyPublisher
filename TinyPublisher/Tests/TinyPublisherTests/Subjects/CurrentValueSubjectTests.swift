@@ -1,6 +1,10 @@
 import XCTest
+
+#if TEST_COMBINE
+import Combine
+#else
 @testable import TinyPublisher
-//import Combine
+#endif
 
 final class CurrentValueSubjectTests: XCTestCase {
     
