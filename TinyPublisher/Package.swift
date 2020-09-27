@@ -23,7 +23,7 @@ let package = Package(
             dependencies: []),
         .testTarget(
             name: "TinyPublisherTests",
-            dependencies: ["TinyPublisher"],
-            swiftSettings: [.define("TEST_COMBINE", .when(configuration: .debug))]),
+            dependencies: ["TinyPublisher"])
+            //swiftSettings: [.define("TEST_COMBINE", .when(configuration: .debug))]),
     ]
 )
