@@ -6,13 +6,24 @@ on:
   push:
     branches:
       - master
+  runs-on: macos-latest
 jobs:
   build:
-    name: Test
-    runs-on: macos-latest
+    name: Test With Tiny
     steps:
       - uses: actions/checkout@master
       - name: Select Xcode 12
         run: sudo xcode-select -switch /Applications/Xcode_12.app
+      - name: Test With Tiny
+        run: swift test --configuration debug
+jobs:
+  build:
+    name: Test With Combine
+    steps:
+      - uses: actions/checkout@master
+      - name: Select Xcode 12
+        run: sudo xcode-select -switch /Applications/Xcode_12.app
+      - name: Test With Tiny
+        run: swift test --configuration debug -Xswiftc -DRUN_UNIT_TESTS_AGAINST_COMBINE
 
  
