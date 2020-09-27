@@ -1,6 +1,6 @@
 import XCTest
 
-#if true
+#if TEST_COMBINE
 import Combine
 #else
 @testable import TinyPublisher
