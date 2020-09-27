@@ -16,7 +16,6 @@ jobs:
         run: sudo xcode-select -switch /Applications/Xcode_12.app
       - name: Test With Tiny
         run: swift test --configuration debug
-jobs:
   build:
     name: Test With Combine
     runs-on: macos-latest
