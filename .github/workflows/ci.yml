@@ -6,10 +6,10 @@ on:
   push:
     branches:
       - master
-  runs-on: macos-latest
 jobs:
   build:
     name: Test With Tiny
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@master
       - name: Select Xcode 12
@@ -19,6 +19,7 @@ jobs:
 jobs:
   build:
     name: Test With Combine
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@master
       - name: Select Xcode 12
