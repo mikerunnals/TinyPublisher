@@ -1,6 +1,6 @@
 import XCTest
 
-#if TEST_COMBINE
+#if RUN_UNIT_TESTS_AGAINST_COMBINE
 import Combine
 #else
 @testable import TinyPublisher
@@ -10,54 +10,28 @@ import Combine
 final class AnyPublisherTests: XCTestCase {
 
     @available(iOS 13.0.0, *)
-    func testTinyAnyPublisherCannotBeDowncast() {
+    func testAnyPublisherCannotBeDowncast() {
         
         class TypeWithSubject {
-            public let publisher: some TinyPublisher.Publisher = TinyPublisher.PassthroughSubject<Int,Never>()
+            public let publisher: some Publisher = PassthroughSubject<Int,Never>()
         }
 
         class TypeWithErasedSubject {
-            public let publisher: some TinyPublisher.Publisher = TinyPublisher.PassthroughSubject<Int,Never>()
+            public let publisher: some Publisher = PassthroughSubject<Int,Never>()
                 .eraseToAnyPublisher()
         }
 
         let nonErased = TypeWithSubject()
-        if let subject = nonErased.publisher as? TinyPublisher.PassthroughSubject<Int,Never> {
+        if let subject = nonErased.publisher as? PassthroughSubject<Int,Never> {
             print("Successfully cast nonErased.publisher. \(subject)")
         } else {
             XCTFail()
         }
         
         let erased = TypeWithErasedSubject()
-        if let subject = erased.publisher as? TinyPublisher.PassthroughSubject<Int,Never> {
+        if let subject = erased.publisher as? PassthroughSubject<Int,Never> {
             print("Successfully cast erased.publisher. \(subject)")
             XCTFail()
         }
     }
-    
-//    @available(iOS 13.0, *)
-//    func testCombineAnyPublisherCannotBeDowncast() {
-//
-//        class TypeWithSubject {
-//            public let publisher: some Combine.Publisher = Combine.PassthroughSubject<Int,Never>()
-//        }
-//
-//        class TypeWithErasedSubject {
-//            public let publisher: some Combine.Publisher = Combine.PassthroughSubject<Int,Never>()
-//                .eraseToAnyPublisher()
-//        }
-//
-//        let nonErased = TypeWithSubject()
-//        if let subject = nonErased.publisher as? Combine.PassthroughSubject<Int,Never> {
-//            print("Successfully cast nonErased.publisher. \(subject)")
-//        } else {
-//            XCTFail()
-//        }
-//
-//        let erased = TypeWithErasedSubject()
-//        if let subject = erased.publisher as? Combine.PassthroughSubject<Int,Never> {
-//            print("Successfully cast erased.publisher. \(subject)")
-//            XCTFail()
-//        }
-//    }
 }

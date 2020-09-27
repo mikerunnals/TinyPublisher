@@ -1,6 +1,6 @@
 import XCTest
 
-#if TEST_COMBINE
+#if RUN_UNIT_TESTS_AGAINST_COMBINE
 import Combine
 #else
 @testable import TinyPublisher

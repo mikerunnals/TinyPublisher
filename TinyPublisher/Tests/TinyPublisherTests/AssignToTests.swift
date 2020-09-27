@@ -1,6 +1,6 @@
 import XCTest
 
-#if TEST_COMBINE
+#if RUN_UNIT_TESTS_AGAINST_COMBINE
 import Combine
 #else
 @testable import TinyPublisher
@@ -8,11 +8,12 @@ import Combine
 
 final class AssignToTests: XCTestCase {
     
+    @available(iOS 13.0, *)
     func testAssignBool() {
         
-        var cancellables: [TinyPublisher.AnyCancellable] = []
+        var cancellables: [AnyCancellable] = []
         
-        let subject = TinyPublisher.PassthroughSubject<Bool, Never>()
+        let subject = PassthroughSubject<Bool, Never>()
         
         class Test {
             
@@ -38,39 +39,7 @@ final class AssignToTests: XCTestCase {
         
         waitForExpectations(timeout: 1)
     }
-    
-//    @available(iOS 13.0, *)
-//    func testCombineAssignBool() {
-//        
-//        var cancellables: [Combine.AnyCancellable] = []
-//        
-//        let subject = Combine.PassthroughSubject<Bool, Never>()
-//        
-//        class Test {
-//            
-//            let expectation: XCTestExpectation
-//            
-//            var value: Bool = false {
-//                didSet {
-//                    expectation.fulfill()
-//                    XCTAssertTrue(value)
-//                }
-//            }
-//            
-//            init(expectation: XCTestExpectation) {
-//                self.expectation = expectation
-//            }
-//        }
-//        
-//        let test = Test(expectation: expectation(description: "expecting true"))
-//        
-//        subject.assign(to: \.value, on: test).store(in: &cancellables)
-//        
-//        subject.send(true)
-//        
-//        waitForExpectations(timeout: 1)
-//    }
-    
+        
     static var allTests = [
         ("testPassthroughSubjectBool", testAssignBool),
     ]
