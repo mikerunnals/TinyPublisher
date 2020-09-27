@@ -7,7 +7,7 @@ on:
     branches:
       - master
 jobs:
-  build:
+  test-tiny:
     name: Test With Tiny
     runs-on: macos-latest
     steps:
@@ -16,7 +16,7 @@ jobs:
         run: sudo xcode-select -switch /Applications/Xcode_12.app
       - name: Test With Tiny
         run: swift test --configuration debug
-  build:
+  test-combine:
     name: Test With Combine
     runs-on: macos-latest
     steps:
