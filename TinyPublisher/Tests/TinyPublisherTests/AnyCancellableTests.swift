@@ -1,33 +1,28 @@
 import XCTest
-@testable import TinyPublisher
+
+#if RUN_UNIT_TESTS_AGAINST_COMBINE
 import Combine
+#else
+@testable import TinyPublisher
+#endif
 
 final class AnyCancellableTests: XCTestCase {
         
+    @available(iOS 13.0, *)
     func testGivenDeinitCalledThenCallsCancelClosure() {
         let e = expectation(description: "cancel called on deinit")
-        var cancellable: TinyPublisher.AnyCancellable? = AnyCancellable {
+        var cancellable: AnyCancellable? = AnyCancellable {
             e.fulfill()
         }
         XCTAssertNotNil(cancellable)
         cancellable = nil
         waitForExpectations(timeout: 1)
     }
-    
+        
     @available(iOS 13.0, *)
-    func testCombineGivenDeinitCalledThenCallsCancelClosure() {
-        let e = expectation(description: "cancel called on deinit")
-        var cancellable: Combine.AnyCancellable? = AnyCancellable {
-            e.fulfill()
-        }
-        XCTAssertNotNil(cancellable)
-        cancellable = nil
-        waitForExpectations(timeout: 1)
-    }
-    
     func testGivenCancelCalledThenCallsCancelClosure() {
         let e = expectation(description: "cancel called on deinit")
-        let cancellable: TinyPublisher.AnyCancellable? = AnyCancellable {
+        let cancellable: AnyCancellable? = AnyCancellable {
             e.fulfill()
         }
         XCTAssertNotNil(cancellable)
@@ -35,23 +30,13 @@ final class AnyCancellableTests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
     
-    @available(iOS 13.0, *)
-    func testCombineGivenCancelCalledThenCallsCancelClosure() {
-        let e = expectation(description: "cancel called on deinit")
-        let cancellable: Combine.AnyCancellable? = AnyCancellable {
-            e.fulfill()
-        }
-        XCTAssertNotNil(cancellable)
-        cancellable?.cancel()
-        waitForExpectations(timeout: 1)
-    }
-
     var deinitCancelClosure: XCTestExpectation? = nil
 
+    @available(iOS 13.0, *)
     func testGivenCancelCalledTwiceThenCallsCancelClosureOnlyOnce() {
         deinitCancelClosure = expectation(description: "expect cancel to be called on deinit")
         
-        let cancellable: TinyPublisher.AnyCancellable = AnyCancellable {
+        let cancellable: AnyCancellable = AnyCancellable {
             self.deinitCancelClosure?.fulfill()
         }
         
@@ -65,25 +50,6 @@ final class AnyCancellableTests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
     
-    @available(iOS 13.0, *)
-    func testCombineGivenCancelCalledTwiceThenCallsCancelClosureOnlyOnce() {
-        deinitCancelClosure = expectation(description: "expect cancel to be called on deinit")
-        
-        let cancellable: Combine.AnyCancellable = AnyCancellable {
-            self.deinitCancelClosure?.fulfill()
-        }
-        
-        cancellable.cancel()
-        waitForExpectations(timeout: 1)
-        
-        deinitCancelClosure = expectation(description: "expect cancel to NOT be called on deinit")
-        deinitCancelClosure?.isInverted = true
-        
-        cancellable.cancel()
-        waitForExpectations(timeout: 1)
-    }
-
-
     static var allTests = [
         ("testGivenDeinitCalledThenCallsCancelClosure", testGivenDeinitCalledThenCallsCancelClosure),
         ("testGivenCancelCalledThenCallsCancelClosure", testGivenCancelCalledThenCallsCancelClosure),
