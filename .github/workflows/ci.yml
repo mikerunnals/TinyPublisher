@@ -2,10 +2,10 @@ name: TinyPublisher CI
 on:
   pull_request:
     branches:
-      - master
+      - main
   push:
     branches:
-      - master
+      - main
 defaults:
   run:
     working-directory: ./TinyPublisher
@@ -14,7 +14,7 @@ jobs:
     name: Test With Tiny
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@main
       - name: Select Xcode 12
         run: sudo xcode-select -switch /Applications/Xcode_12.app
       - name: Test With Tiny
@@ -24,7 +24,7 @@ jobs:
     name: Test With Combine
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@main
       - name: Select Xcode 12
         run: sudo xcode-select -switch /Applications/Xcode_12.app
       - name: Test With Combine

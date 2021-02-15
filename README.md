@@ -3,6 +3,8 @@
 # TinyPublisher
 A Tiny Stand-in that mimics some of Swift Combine API
 
+![TinyPublisher CI](https://github.com/mikerunnals/TinyPublisher/workflows/TinyPublisher%20CI/badge.svg)
+
 # Goal
 
 So Application Developers who cannot import Combine because they target iOS 10, 11 or 12 can:
