@@ -1,6 +1,6 @@
 # The Magic Here
 
-To support the TinyPublisher having two test targets, one that runs unit tests with TinyPublisher and another target the runs all the unit tests against Swift Combine...
+To support the TinyPublisher Package having two test targets: `SwiftCombineTests` the runs all the unit tests against Swift Combine, and `TinyPublisherTests` that runs unit tests with TinyPublisher...
 
 The magic here is that the `SwiftCombineTests` directory is just a symbolic link to the `TinyPublisherTests` directory, i.e,
 
