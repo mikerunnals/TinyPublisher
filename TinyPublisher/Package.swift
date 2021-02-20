@@ -26,7 +26,7 @@ let package = Package(
             dependencies: ["TinyPublisher"]),
         .testTarget(
             name: "SwiftCombineTests",
-            dependencies: ["TinyPublisher"],
+            dependencies: [],
             swiftSettings: [.define("RUN_UNIT_TESTS_AGAINST_COMBINE")])
     ]
 )
