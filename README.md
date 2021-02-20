@@ -8,13 +8,15 @@ A Tiny Stand-in that mimics some of Swift Combine API
 
 So Application Developers who cannot import Combine because they target iOS 10, 11 or 12 can:
   
-> "...get started right away. Compose small parts of your application into custom Publishers, identify small pieces of logic you can break up into little tiny Publishers and use composition along the way to chain them all together.
->You can totally adopt incrementally. You don't have to change everything right away or, you know, you can mix and match."
+> ...get started right away. Compose small parts of your application into custom Publishers, identify small pieces of logic you can break up into little tiny Publishers and use composition along the way to chain them all together.
 >
->[Quote from Combine in Practice WWDC 2019](https://developer.apple.com/videos/play/wwdc2019/721/?time=2028)
+>You can totally adopt incrementally. You don't have to change everything right away or, you know, you can mix and match.
+>
+>[From Combine in Practice WWDC 2019](https://developer.apple.com/videos/play/wwdc2019/721/?time=2028)
 
 This Package uses type names that collide with Swift Combine.
-The intent is that once a codebase can import Swift Combine, TinyPublisher will be remove!
+The intent is that once a codebase can import Swift Combine, TinyPublisher will be removed!
+
 Thus a goal of this Package is that **there is little to no refactoring necessary** when switching to Swift Combine.
 
 ## Testing
