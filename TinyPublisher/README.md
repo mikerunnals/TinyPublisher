@@ -6,8 +6,8 @@ A Tiny Stand-in that mimics some of the Swift Combine API
 
 ### Run unit tests against TinyPublisher
 
->swift test --configuration debug
+>swift test --configuration debug --filter TinyPublisher
 
 ### Run unit tests against Swift Combine
 
->swift test --configuration debug -Xswiftc -DRUN_UNIT_TESTS_AGAINST_COMBINE
+>swift test --configuration debug --filter SwiftCombine

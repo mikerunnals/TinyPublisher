@@ -18,7 +18,7 @@ jobs:
       - name: Select Xcode 12
         run: sudo xcode-select -switch /Applications/Xcode_12.app
       - name: Test With Tiny
-        run: swift test --configuration debug
+        run: swift test --configuration debug --filter TinyPublisher
         working-directory: ./TinyPublisher
   test-combine:
     name: Test With Combine
@@ -28,7 +28,7 @@ jobs:
       - name: Select Xcode 12
         run: sudo xcode-select -switch /Applications/Xcode_12.app
       - name: Test With Combine
-        run: swift test --configuration debug -Xswiftc -DRUN_UNIT_TESTS_AGAINST_COMBINE
+        run: swift test --configuration debug --filter SwiftCombine 
         working-directory: ./TinyPublisher
 
  
