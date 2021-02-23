@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina3_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -15,24 +15,24 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Wizard_Old_School" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello Old Wizard!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cm9-H8-e4d">
-                                <rect key="frame" x="141" y="442.5" width="132.5" height="21"/>
+                                <rect key="frame" x="94" y="229.5" width="132.5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kfq-u1-IMh" userLabel="Signup Button">
-                                <rect key="frame" x="82" y="574" width="250" height="44"/>
+                                <rect key="frame" x="35" y="400.5" width="250" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="mP9-3p-gQ7"/>
                                     <constraint firstAttribute="height" constant="44" id="zuA-cH-0ne"/>
                                 </constraints>
                                 <state key="normal" title="Signup"/>
                                 <connections>
-                                    <segue destination="4Ak-wS-VRL" kind="show" id="pOo-CL-Zrm"/>
+                                    <segue destination="4Ak-wS-VRL" kind="showDetail" id="pOo-CL-Zrm"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -42,7 +42,7 @@
                             <constraint firstItem="kfq-u1-IMh" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="ETQ-gG-g1o"/>
                             <constraint firstItem="cm9-H8-e4d" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="O6a-LM-C5f"/>
                             <constraint firstItem="cm9-H8-e4d" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Qyu-Fw-Cf7"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="kfq-u1-IMh" secondAttribute="bottom" constant="244" id="Wot-Op-dug"/>
+                            <constraint firstItem="kfq-u1-IMh" firstAttribute="top" secondItem="cm9-H8-e4d" secondAttribute="bottom" constant="150" id="upi-kG-Idu"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -55,30 +55,31 @@
             <objects>
                 <tableViewController id="4Ak-wS-VRL" userLabel="Signup Table View Controller" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="vPn-5V-KA4" userLabel="Signup Table View">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <sections>
                             <tableViewSection id="5aO-Yf-uHQ">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Y6M-bM-0bo" userLabel="Wizard Name Table View Cell">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="28" width="320" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Y6M-bM-0bo" id="fJ0-mc-3bM">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cc6-rp-FfG" userLabel="Wizard Name Button">
-                                                    <rect key="frame" x="20" y="10" width="79" height="24"/>
+                                                <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cc6-rp-FfG" userLabel="Wizard Name Button">
+                                                    <rect key="frame" x="155" y="10" width="40" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="HUY-44-awx"/>
                                                     </constraints>
-                                                    <state key="normal" title="Button">
+                                                    <state key="normal">
                                                         <imageReference key="image" image="person.circle" catalog="system" symbolScale="large"/>
+                                                        <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
                                                     </state>
                                                 </button>
                                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Wizard Name" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="S0U-AM-CXB">
-                                                    <rect key="frame" x="99" y="5" width="305" height="34"/>
+                                                    <rect key="frame" x="195" y="5" width="115" height="34"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
@@ -86,22 +87,20 @@
                                             <constraints>
                                                 <constraint firstItem="S0U-AM-CXB" firstAttribute="leading" secondItem="cc6-rp-FfG" secondAttribute="trailing" id="01g-f7-pKX"/>
                                                 <constraint firstAttribute="trailing" secondItem="S0U-AM-CXB" secondAttribute="trailing" constant="10" id="5mU-X3-Lmb"/>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="cc6-rp-FfG" secondAttribute="trailing" constant="20" symbolic="YES" id="5nc-c5-bcV"/>
                                                 <constraint firstItem="cc6-rp-FfG" firstAttribute="centerY" secondItem="fJ0-mc-3bM" secondAttribute="centerY" id="7pP-0o-BqO"/>
                                                 <constraint firstItem="S0U-AM-CXB" firstAttribute="centerY" secondItem="fJ0-mc-3bM" secondAttribute="centerY" id="F3V-Y0-0ri"/>
-                                                <constraint firstItem="cc6-rp-FfG" firstAttribute="leading" secondItem="fJ0-mc-3bM" secondAttribute="leading" constant="20" symbolic="YES" id="TQu-dK-8Kf"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="ygo-7d-V32" userLabel="Password Table View Cell">
-                                        <rect key="frame" x="0.0" y="71.5" width="414" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="71.5" width="320" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ygo-7d-V32" id="3Yd-co-fyR">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yws-Qk-zRV" userLabel="Password Lock Button">
-                                                    <rect key="frame" x="20" y="8" width="79" height="24.5"/>
+                                                    <rect key="frame" x="16" y="8" width="79" height="24.5"/>
                                                     <state key="normal" title="Button">
                                                         <imageReference key="image" image="lock.circle" catalog="system" symbolScale="large"/>
                                                     </state>
@@ -116,10 +115,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="l7d-8T-keC" userLabel="Repeat Password Table View Cell">
-                                        <rect key="frame" x="0.0" y="115" width="414" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="115" width="320" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="l7d-8T-keC" id="vtY-bV-OXO">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ts-ai-1f6">
@@ -137,14 +136,14 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="WIC-ai-Phn" userLabel="Create Account Table View Cell">
-                                        <rect key="frame" x="0.0" y="158.5" width="414" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="158.5" width="320" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="WIC-ai-Phn" id="gzB-fm-U9z">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HDz-Bj-x0l">
-                                                    <rect key="frame" x="10" y="7" width="394" height="30"/>
+                                                    <rect key="frame" x="10" y="7" width="300" height="30"/>
                                                     <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
                                                     <state key="normal" title="Create Account"/>
                                                 </button>
