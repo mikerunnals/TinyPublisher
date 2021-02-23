@@ -74,6 +74,18 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="WIC-ai-Phn" id="gzB-fm-U9z">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HDz-Bj-x0l">
+                                                    <rect key="frame" x="10" y="7" width="394" height="30"/>
+                                                    <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
+                                                    <state key="normal" title="Create Account"/>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="HDz-Bj-x0l" secondAttribute="trailing" constant="10" id="eeF-px-ANG"/>
+                                                <constraint firstItem="HDz-Bj-x0l" firstAttribute="centerY" secondItem="gzB-fm-U9z" secondAttribute="centerY" id="fjY-Qq-2aR"/>
+                                                <constraint firstItem="HDz-Bj-x0l" firstAttribute="leading" secondItem="gzB-fm-U9z" secondAttribute="leading" constant="10" id="nwq-gn-a3f"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -87,7 +99,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2gq-lv-Yjm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-78" y="786"/>
+            <point key="canvasLocation" x="-78.260869565217391" y="785.49107142857144"/>
         </scene>
     </scenes>
     <resources>
