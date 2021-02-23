@@ -18,16 +18,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hello Old Wizard!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cm9-H8-e4d">
-                                <rect key="frame" x="63" y="438" width="288" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello Old Wizard!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cm9-H8-e4d">
+                                <rect key="frame" x="141" y="442.5" width="132.5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kfq-u1-IMh" userLabel="Signup Button">
+                                <rect key="frame" x="82" y="574" width="250" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="mP9-3p-gQ7"/>
+                                    <constraint firstAttribute="height" constant="44" id="zuA-cH-0ne"/>
+                                </constraints>
+                                <state key="normal" title="Signup"/>
+                                <connections>
+                                    <segue destination="4Ak-wS-VRL" kind="show" id="pOo-CL-Zrm"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="kfq-u1-IMh" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="ETQ-gG-g1o"/>
+                            <constraint firstItem="cm9-H8-e4d" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="O6a-LM-C5f"/>
+                            <constraint firstItem="cm9-H8-e4d" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Qyu-Fw-Cf7"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="kfq-u1-IMh" secondAttribute="bottom" constant="244" id="Wot-Op-dug"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -39,7 +55,7 @@
             <objects>
                 <tableViewController id="4Ak-wS-VRL" userLabel="Signup Table View Controller" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="vPn-5V-KA4" userLabel="Signup Table View">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <sections>
@@ -54,14 +70,25 @@
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cc6-rp-FfG" userLabel="Wizard Name Button">
                                                     <rect key="frame" x="20" y="10" width="79" height="24"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="HUY-44-awx"/>
+                                                    </constraints>
                                                     <state key="normal" title="Button">
-                                                        <imageReference key="image" image="person.circle.fill" catalog="system" symbolScale="large"/>
+                                                        <imageReference key="image" image="person.circle" catalog="system" symbolScale="large"/>
                                                     </state>
                                                 </button>
+                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Wizard Name" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="S0U-AM-CXB">
+                                                    <rect key="frame" x="99" y="5" width="305" height="34"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="S0U-AM-CXB" firstAttribute="leading" secondItem="cc6-rp-FfG" secondAttribute="trailing" id="01g-f7-pKX"/>
+                                                <constraint firstAttribute="trailing" secondItem="S0U-AM-CXB" secondAttribute="trailing" constant="10" id="5mU-X3-Lmb"/>
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="cc6-rp-FfG" secondAttribute="trailing" constant="20" symbolic="YES" id="5nc-c5-bcV"/>
                                                 <constraint firstItem="cc6-rp-FfG" firstAttribute="centerY" secondItem="fJ0-mc-3bM" secondAttribute="centerY" id="7pP-0o-BqO"/>
+                                                <constraint firstItem="S0U-AM-CXB" firstAttribute="centerY" secondItem="fJ0-mc-3bM" secondAttribute="centerY" id="F3V-Y0-0ri"/>
                                                 <constraint firstItem="cc6-rp-FfG" firstAttribute="leading" secondItem="fJ0-mc-3bM" secondAttribute="leading" constant="20" symbolic="YES" id="TQu-dK-8Kf"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -73,14 +100,19 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yws-Qk-zRV" userLabel="Password Lock Button">
-                                                    <rect key="frame" x="20" y="8" width="79" height="24"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yws-Qk-zRV" userLabel="Password Lock Button">
+                                                    <rect key="frame" x="20" y="8" width="79" height="24.5"/>
                                                     <state key="normal" title="Button">
-                                                        <imageReference key="image" image="lock.circle.fill" catalog="system" symbolScale="large"/>
+                                                        <imageReference key="image" image="lock.circle" catalog="system" symbolScale="large"/>
                                                     </state>
                                                 </button>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Yws-Qk-zRV" secondAttribute="trailing" constant="20" symbolic="YES" id="0VW-m0-YLg"/>
+                                                <constraint firstItem="Yws-Qk-zRV" firstAttribute="leading" secondItem="3Yd-co-fyR" secondAttribute="leadingMargin" id="KXJ-9H-Bx4"/>
+                                                <constraint firstItem="Yws-Qk-zRV" firstAttribute="top" secondItem="3Yd-co-fyR" secondAttribute="topMargin" constant="-3" id="PJO-xB-AeV"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Yws-Qk-zRV" secondAttribute="bottom" constant="0.5" id="jMF-vB-3LP"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="l7d-8T-keC" userLabel="Repeat Password Table View Cell">
@@ -90,10 +122,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ts-ai-1f6" userLabel="Repeat Password Lock Button">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ts-ai-1f6">
                                                     <rect key="frame" x="20" y="10" width="79" height="24"/>
                                                     <state key="normal" title="Button">
-                                                        <imageReference key="image" image="lock.circle.fill" catalog="system" symbolScale="large"/>
+                                                        <imageReference key="image" image="lock.circle" catalog="system" symbolScale="large"/>
                                                     </state>
                                                 </button>
                                             </subviews>
@@ -132,6 +164,7 @@
                             <outlet property="delegate" destination="4Ak-wS-VRL" id="gvw-ln-lZv"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="PCj-oh-Xho"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2gq-lv-Yjm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -139,8 +172,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="lock.circle.fill" catalog="system" width="128" height="121"/>
-        <image name="person.circle.fill" catalog="system" width="128" height="121"/>
+        <image name="lock.circle" catalog="system" width="128" height="121"/>
+        <image name="person.circle" catalog="system" width="128" height="121"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
