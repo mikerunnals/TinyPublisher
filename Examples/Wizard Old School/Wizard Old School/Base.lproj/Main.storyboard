@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -50,6 +51,19 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Y6M-bM-0bo" id="fJ0-mc-3bM">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cc6-rp-FfG" userLabel="Wizard Name Button">
+                                                    <rect key="frame" x="20" y="10" width="79" height="24"/>
+                                                    <state key="normal" title="Button">
+                                                        <imageReference key="image" image="person.circle.fill" catalog="system" symbolScale="large"/>
+                                                    </state>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="cc6-rp-FfG" secondAttribute="trailing" constant="20" symbolic="YES" id="5nc-c5-bcV"/>
+                                                <constraint firstItem="cc6-rp-FfG" firstAttribute="centerY" secondItem="fJ0-mc-3bM" secondAttribute="centerY" id="7pP-0o-BqO"/>
+                                                <constraint firstItem="cc6-rp-FfG" firstAttribute="leading" secondItem="fJ0-mc-3bM" secondAttribute="leading" constant="20" symbolic="YES" id="TQu-dK-8Kf"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="ygo-7d-V32" userLabel="Password Table View Cell">
@@ -58,6 +72,15 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ygo-7d-V32" id="3Yd-co-fyR">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yws-Qk-zRV" userLabel="Password Lock Button">
+                                                    <rect key="frame" x="20" y="8" width="79" height="24"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" title="Button">
+                                                        <imageReference key="image" image="lock.circle.fill" catalog="system" symbolScale="large"/>
+                                                    </state>
+                                                </button>
+                                            </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="l7d-8T-keC" userLabel="Repeat Password Table View Cell">
@@ -66,6 +89,19 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="l7d-8T-keC" id="vtY-bV-OXO">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ts-ai-1f6" userLabel="Repeat Password Lock Button">
+                                                    <rect key="frame" x="20" y="10" width="79" height="24"/>
+                                                    <state key="normal" title="Button">
+                                                        <imageReference key="image" image="lock.circle.fill" catalog="system" symbolScale="large"/>
+                                                    </state>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="1Ts-ai-1f6" firstAttribute="leading" secondItem="vtY-bV-OXO" secondAttribute="leading" constant="20" symbolic="YES" id="HYH-gH-8i3"/>
+                                                <constraint firstItem="1Ts-ai-1f6" firstAttribute="centerY" secondItem="vtY-bV-OXO" secondAttribute="centerY" id="LB2-Xx-GOU"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="1Ts-ai-1f6" secondAttribute="trailing" constant="20" symbolic="YES" id="TeQ-Pm-zPk"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="WIC-ai-Phn" userLabel="Create Account Table View Cell">
@@ -103,6 +139,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="lock.circle.fill" catalog="system" width="128" height="121"/>
+        <image name="person.circle.fill" catalog="system" width="128" height="121"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
