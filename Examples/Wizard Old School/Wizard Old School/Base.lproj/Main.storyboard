@@ -69,7 +69,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cc6-rp-FfG" userLabel="Wizard Name Button">
-                                                    <rect key="frame" x="10" y="10" width="40" height="24"/>
+                                                    <rect key="frame" x="16" y="10" width="40" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="HUY-44-awx"/>
                                                     </constraints>
@@ -80,7 +80,7 @@
                                                     </state>
                                                 </button>
                                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Wizard Name" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="S0U-AM-CXB">
-                                                    <rect key="frame" x="50" y="5" width="260" height="34"/>
+                                                    <rect key="frame" x="56" y="5" width="254" height="34"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
@@ -90,7 +90,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="S0U-AM-CXB" secondAttribute="trailing" constant="10" id="5mU-X3-Lmb"/>
                                                 <constraint firstItem="cc6-rp-FfG" firstAttribute="centerY" secondItem="fJ0-mc-3bM" secondAttribute="centerY" id="7pP-0o-BqO"/>
                                                 <constraint firstItem="S0U-AM-CXB" firstAttribute="centerY" secondItem="fJ0-mc-3bM" secondAttribute="centerY" id="F3V-Y0-0ri"/>
-                                                <constraint firstItem="cc6-rp-FfG" firstAttribute="leading" secondItem="fJ0-mc-3bM" secondAttribute="leading" constant="10" id="W8f-mJ-Nkk"/>
+                                                <constraint firstItem="cc6-rp-FfG" firstAttribute="leading" secondItem="fJ0-mc-3bM" secondAttribute="leadingMargin" id="zJ0-gH-ft0"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -102,7 +102,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yws-Qk-zRV" userLabel="Password Lock Button">
-                                                    <rect key="frame" x="16" y="8" width="79" height="24.5"/>
+                                                    <rect key="frame" x="16" y="10" width="79" height="24"/>
                                                     <state key="normal" title="Button">
                                                         <imageReference key="image" image="lock.circle" catalog="system" symbolScale="large"/>
                                                         <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
@@ -110,10 +110,8 @@
                                                 </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Yws-Qk-zRV" secondAttribute="trailing" constant="20" symbolic="YES" id="0VW-m0-YLg"/>
                                                 <constraint firstItem="Yws-Qk-zRV" firstAttribute="leading" secondItem="3Yd-co-fyR" secondAttribute="leadingMargin" id="KXJ-9H-Bx4"/>
-                                                <constraint firstItem="Yws-Qk-zRV" firstAttribute="top" secondItem="3Yd-co-fyR" secondAttribute="topMargin" constant="-3" id="PJO-xB-AeV"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="Yws-Qk-zRV" secondAttribute="bottom" constant="0.5" id="jMF-vB-3LP"/>
+                                                <constraint firstItem="Yws-Qk-zRV" firstAttribute="centerY" secondItem="3Yd-co-fyR" secondAttribute="centerY" id="XnB-AE-orh"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -125,14 +123,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ts-ai-1f6">
-                                                    <rect key="frame" x="20" y="10" width="79" height="24"/>
+                                                    <rect key="frame" x="16" y="10" width="79" height="24"/>
                                                     <state key="normal" title="Button">
                                                         <imageReference key="image" image="lock.circle" catalog="system" symbolScale="large"/>
                                                     </state>
                                                 </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="1Ts-ai-1f6" firstAttribute="leading" secondItem="vtY-bV-OXO" secondAttribute="leading" constant="20" symbolic="YES" id="HYH-gH-8i3"/>
+                                                <constraint firstItem="1Ts-ai-1f6" firstAttribute="leading" secondItem="vtY-bV-OXO" secondAttribute="leadingMargin" id="HYH-gH-8i3"/>
                                                 <constraint firstItem="1Ts-ai-1f6" firstAttribute="centerY" secondItem="vtY-bV-OXO" secondAttribute="centerY" id="LB2-Xx-GOU"/>
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="1Ts-ai-1f6" secondAttribute="trailing" constant="20" symbolic="YES" id="TeQ-Pm-zPk"/>
                                             </constraints>
